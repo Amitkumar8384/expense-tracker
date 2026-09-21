@@ -274,3 +274,23 @@ If you like this project, consider giving the repository a ⭐ on GitHub.
 📄 License
 
 This project is created for learning, portfolio, and demonstration purposes.
+## 📸 Screenshots
+
+### 🔐 Login
+![Login](screenshots/login.png)
+
+### 📊 Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### 💰 Transactions
+![Transactions](screenshots/transaction.png)
+
+### 📈 Reports
+![Reports](screenshots/report.png)
+
+### 👤 Profile
+![Profile](screenshots/profile.png)
+
+
+
+
