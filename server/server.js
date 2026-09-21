@@ -21,7 +21,7 @@ const allowedOrigins = [
   'http://localhost:5173',
 
   // Replace this with your actual Vercel URL
-  'https://expense-tracker-lyart-beta-32.vercel.app/'
+  'https://expense-tracker-lyart-beta-32.vercel.app'
 ]
 
 app.use(
