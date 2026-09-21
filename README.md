@@ -1,16 +1,120 @@
-# React + Vite
+# 💰 Expense Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack expense management application built with React, Node.js, Express, and MySQL.
 
-Currently, two official plugins are available:
+The application allows users to securely manage their personal expenses, view financial summaries, analyze spending through charts, and generate PDF reports.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Live Demo
 
-## React Compiler
+🌐 **Frontend:**  
+https://expense-tracker-lyart-beta-32.vercel.app
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🔗 **Backend API:**  
+https://expense-tracker-c4xe.onrender.com
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Features
+
+### 🔐 Authentication
+- User Signup
+- User Login
+- JWT-based authentication
+- Secure password hashing with bcrypt
+- Protected API routes
+- Logout functionality
+- Change password
+
+### 💸 Expense Management
+- Add expenses
+- Edit expenses
+- Delete expenses
+- View personal expenses
+- Expense categories
+- Income and expense tracking
+- Date-based expense records
+
+### 📊 Dashboard
+- Total income
+- Total expenses
+- Current balance
+- Expense statistics
+- Spending overview
+
+### 📈 Reports & Analytics
+- Expense charts
+- Category-wise analysis
+- Income vs expense analysis
+- Financial insights
+- PDF report generation
+
+### 👤 Profile
+- User profile
+- Account information
+- Password management
+
+### 📱 Responsive Design
+- Desktop friendly
+- Mobile friendly
+- Responsive dashboard
+- Works across different screen sizes
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React
+- Vite
+- JavaScript
+- CSS
+- Recharts
+- jsPDF
+- jsPDF AutoTable
+
+### Backend
+- Node.js
+- Express.js
+- JWT
+- bcryptjs
+- CORS
+- dotenv
+
+### Database
+- MySQL
+- Aiven Cloud
+
+### Deployment
+- Vercel — Frontend
+- Render — Backend
+- Aiven — Database
+
+---
+
+## 🏗️ Project Architecture
+
+```text
+                    ┌─────────────────────┐
+                    │       User          │
+                    │   Mobile / Desktop  │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   React + Vite      │
+                    │      Vercel         │
+                    └──────────┬──────────┘
+                               │
+                         REST API / JWT
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Node.js + Express   │
+                    │       Render        │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │      MySQL          │
+                    │       Aiven         │
+                    └─────────────────────┘
