@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import './profile.css'
 
 const API_URL =
-  'http://localhost:5000/api/auth/profile'
+  `${import.meta.env.VITE_API_URL}/api/auth/profile`
 
 const PASSWORD_API =
-  'http://localhost:5000/api/auth/change-password'
-
+  `${import.meta.env.VITE_API_URL}/api/auth/change-password`
+  
 function Profile({
   user,
   onLogout,

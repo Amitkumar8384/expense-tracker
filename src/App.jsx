@@ -9,7 +9,8 @@ import Summary from './components/Summary'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
 
-const API_URL = 'http://localhost:5000/api/expenses'
+const API_URL =
+  `${import.meta.env.VITE_API_URL}/api/expenses`
 
 function App() {
 
@@ -386,87 +387,89 @@ const [showReports, setShowReports] = useState(() => {
   // ===============================
   // UPDATE EXPENSE
   // ===============================
+async function updateExpense(updatedExpense) {
+  try {
+    const token = getToken()
 
-  async function updateExpense(
-    updatedExpense
-  ) {
-
-    try {
-
-      const token = getToken()
-
-      if (!token) {
-        handleLogout()
-        return
-      }
-
-      const response =
-        await fetch(
-          `${API_URL}/${updatedExpense.id}`,
-          {
-            method: 'PUT',
-
-            headers: {
-              'Content-Type':
-                'application/json',
-
-              Authorization:
-                `Bearer ${token}`
-            },
-
-            body:
-              JSON.stringify(
-                updatedExpense
-              )
-          }
-        )
-
-      if (
-        response.status === 401 ||
-        response.status === 403
-      ) {
-
-        handleLogout()
-        return
-
-      }
-
-      if (!response.ok) {
-
-        throw new Error(
-          'Failed to update expense'
-        )
-
-      }
-
-      const savedExpense =
-        await response.json()
-
-      setExpenses(
-        prevExpenses =>
-          prevExpenses.map(
-            expense =>
-              expense.id ===
-              savedExpense.id
-                ? savedExpense
-                : expense
-          )
-      )
-
-      setEditingExpense(null)
-
-    } catch (error) {
-
-      console.error(error)
-
-      alert(
-        'Unable to update transaction'
-      )
-
+    if (!token) {
+      handleLogout()
+      return
     }
 
-  }
+    const response = await fetch(
+      `${API_URL}/${updatedExpense.id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: updatedExpense.title,
+          amount: Number(updatedExpense.amount),
+          type: updatedExpense.type,
+          category: updatedExpense.category,
+          date: updatedExpense.date
+        })
+      }
+    )
 
+    // 🔴 Backend error ko properly dekho
+    if (!response.ok) {
+      const errorText = await response.text()
+
+      console.error(
+        'UPDATE FAILED:',
+        response.status,
+        errorText
+      )
+
+      alert(
+        `Unable to update transaction (${response.status})`
+      )
+
+      return
+    }
+
+    // Backend response JSON ho ya na ho,
+    // local state ko updated data se update karo
+    let savedExpense = updatedExpense
+
+    const responseText = await response.text()
+
+    if (responseText) {
+      try {
+        savedExpense = JSON.parse(responseText)
+      } catch {
+        console.warn(
+          'Backend returned non-JSON response'
+        )
+      }
+    }
+
+    setExpenses(prevExpenses =>
+      prevExpenses.map(expense =>
+        expense.id === updatedExpense.id
+          ? {
+              ...expense,
+              ...savedExpense,
+              id: updatedExpense.id
+            }
+          : expense
+      )
+    )
+
+    setEditingExpense(null)
+
+  } catch (error) {
+    console.error(
+      'UPDATE ERROR:',
+      error
+    )
+
+    alert('Unable to update transaction')
+  }
+}
 
   // ===============================
   // CLOSE EDIT MODAL

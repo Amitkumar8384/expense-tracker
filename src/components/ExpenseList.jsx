@@ -89,7 +89,11 @@ function ExpenseList({
                     </span>
 
                     <span>
-                      {expense.date}
+                      {new Date(expense.date).toLocaleDateString('en-IN', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric'
+})}
                     </span>
 
                   </div>
