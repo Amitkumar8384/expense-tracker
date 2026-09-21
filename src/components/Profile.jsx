@@ -340,7 +340,7 @@ function Profile({
         await fetch(
           PASSWORD_API,
           {
-            method: 'POST',
+            method: 'PUT',
 
             headers: {
               'Content-Type':
