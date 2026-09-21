@@ -1,0 +1,637 @@
+/* =========================================================
+   MONTHLY REPORTS
+   ========================================================= */
+
+.reports-page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 0 50px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.reports-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.reports-eyebrow {
+  display: block;
+  margin-bottom: 7px;
+
+  color: #818cf8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.reports-header h1 {
+  margin: 0;
+  color: #f8fafc;
+
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+}
+
+.reports-header p {
+  margin: 8px 0 0;
+
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   MONTH PICKER
+   ========================================================= */
+
+.reports-month-picker {
+  min-width: 180px;
+}
+
+.reports-month-picker label {
+  display: block;
+  margin-bottom: 7px;
+
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.reports-month-picker input {
+  width: 100%;
+  height: 44px;
+  box-sizing: border-box;
+
+  padding: 0 12px;
+
+  color: #e2e8f0;
+  background: #0f172a;
+
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  transition: 0.2s ease;
+}
+
+.reports-month-picker input:focus {
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.reports-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  margin-bottom: 18px;
+}
+
+.report-stat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-height: 105px;
+  padding: 20px;
+
+  background: rgba(15, 23, 42, 0.88);
+
+  border: 1px solid rgba(148, 163, 184, 0.10);
+  border-radius: 16px;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.report-stat-icon {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.report-stat.income .report-stat-icon {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.10);
+}
+
+.report-stat.expense .report-stat-icon {
+  color: #fb7185;
+  background: rgba(244, 63, 94, 0.10);
+}
+
+.report-stat.balance .report-stat-icon {
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.12);
+}
+
+.report-stat div {
+  min-width: 0;
+}
+
+.report-stat span:not(.report-stat-icon) {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.report-stat strong {
+  color: #f8fafc;
+
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.report-stat strong.positive {
+  color: #34d399;
+}
+
+.report-stat strong.negative {
+  color: #fb7185;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 18px;
+
+  margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.reports-card {
+  padding: 22px;
+
+  background: rgba(15, 23, 42, 0.88);
+
+  border: 1px solid rgba(148, 163, 184, 0.10);
+  border-radius: 16px;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.reports-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-bottom: 22px;
+}
+
+.reports-card-header h2 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.reports-month-label,
+.reports-count {
+  padding: 6px 10px;
+
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.09);
+
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  border-radius: 8px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.category-item {
+  position: relative;
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+}
+
+.category-info span {
+  color: #cbd5e1;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.category-info strong {
+  color: #f8fafc;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.category-progress {
+  width: 100%;
+  height: 7px;
+
+  overflow: hidden;
+
+  background: #1e293b;
+  border-radius: 99px;
+}
+
+.category-progress div {
+  height: 100%;
+
+  min-width: 3px;
+
+  background: linear-gradient(
+    90deg,
+    #6366f1,
+    #8b5cf6
+  );
+
+  border-radius: inherit;
+
+  transition: width 0.4s ease;
+}
+
+.category-item small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #64748b;
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   OVERVIEW
+   ========================================================= */
+
+.report-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  border-top: 1px solid rgba(148, 163, 184, 0.08);
+  border-left: 1px solid rgba(148, 163, 184, 0.08);
+
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.report-overview > div {
+  min-height: 92px;
+
+  padding: 17px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: rgba(2, 6, 23, 0.25);
+
+  border-right: 1px solid rgba(148, 163, 184, 0.08);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.report-overview span {
+  margin-bottom: 7px;
+
+  color: #64748b;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.report-overview strong {
+  color: #f8fafc;
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.income-text {
+  color: #34d399 !important;
+}
+
+.expense-text {
+  color: #fb7185 !important;
+}
+
+
+/* =========================================================
+   TRANSACTIONS
+   ========================================================= */
+
+.reports-transactions {
+  overflow: hidden;
+}
+
+.reports-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.reports-table {
+  width: 100%;
+  min-width: 650px;
+
+  border-collapse: collapse;
+}
+
+.reports-table th {
+  padding: 12px 14px;
+
+  color: #64748b;
+  background: rgba(2, 6, 23, 0.25);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.reports-table td {
+  padding: 14px;
+
+  color: #94a3b8;
+
+  border-top: 1px solid rgba(148, 163, 184, 0.07);
+
+  font-size: 13px;
+}
+
+.reports-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.reports-table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.035);
+}
+
+.reports-table td strong {
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+.report-type {
+  display: inline-flex;
+
+  padding: 5px 9px;
+
+  border-radius: 7px;
+
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.report-type.income {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.10);
+}
+
+.report-type.expense {
+  color: #fb7185;
+  background: rgba(244, 63, 94, 0.10);
+}
+
+.amount-income {
+  color: #34d399 !important;
+  font-weight: 800;
+}
+
+.amount-expense {
+  color: #fb7185 !important;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.reports-empty {
+  min-height: 190px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.reports-empty > div {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 14px;
+
+  background: rgba(99, 102, 241, 0.08);
+
+  font-size: 22px;
+}
+
+.reports-empty h3 {
+  margin: 0 0 5px;
+
+  color: #cbd5e1;
+
+  font-size: 14px;
+}
+
+.reports-empty p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+
+  .reports-page {
+    padding: 20px 0 40px;
+  }
+
+  .reports-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .reports-month-picker {
+    width: 100%;
+  }
+
+  .reports-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+
+  .reports-header h1 {
+    font-size: 24px;
+  }
+
+  .reports-card {
+    padding: 17px;
+  }
+
+  .reports-card-header {
+    flex-direction: column;
+  }
+
+  .reports-month-label,
+  .reports-count {
+    align-self: flex-start;
+  }
+
+  .report-stat {
+    padding: 17px;
+  }
+
+  .report-stat strong {
+    font-size: 19px;
+  }
+
+  .report-overview strong {
+    font-size: 16px;
+  }
+}
+.reports-btn {
+  padding: 9px 14px;
+
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 9px;
+
+  background: rgba(99, 102, 241, 0.08);
+  color: #a5b4fc;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.reports-btn:hover {
+  background: rgba(99, 102, 241, 0.16);
+  border-color: #6366f1;
+  color: #ffffff;
+}
+.reports-back-btn {
+  padding: 9px 14px;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 9px;
+  background: rgba(99, 102, 241, 0.08);
+  color: #a5b4fc;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.reports-back-btn:hover {
+  background: rgba(99, 102, 241, 0.16);
+  border-color: #6366f1;
+  color: #ffffff;
+}
+.export-btn {
+  padding: 10px 15px;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 9px;
+  background: rgba(99, 102, 241, 0.1);
+  color: #a5b4fc;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.export-btn:hover {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: #6366f1;
+  color: #fff;
+}
