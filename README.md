@@ -1,3 +1,4 @@
+
 # 💰 Expense Tracker
 
 A full-stack expense management application built with **React, Node.js, Express.js, and MySQL**.
@@ -111,6 +112,25 @@ https://expense-tracker-c4xe.onrender.com
 - Aiven — Database
 
 ---
+
+
+## 📸 Screenshots
+
+### 🔐 Login
+![Login](screenshots/login.png)
+
+### 📊 Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### 💰 Transactions
+![Transactions](screenshots/transaction.png)
+
+### 📈 Reports
+![Reports](screenshots/report.png)
+
+### 👤 Profile
+![Profile](screenshots/profile.png)
+
 
 # 🏗️ Application Architecture
 
@@ -274,22 +294,6 @@ If you like this project, consider giving the repository a ⭐ on GitHub.
 📄 License
 
 This project is created for learning, portfolio, and demonstration purposes.
-## 📸 Screenshots
-
-### 🔐 Login
-![Login](screenshots/login.png)
-
-### 📊 Dashboard
-![Dashboard](screenshots/dashboard.png)
-
-### 💰 Transactions
-![Transactions](screenshots/transaction.png)
-
-### 📈 Reports
-![Reports](screenshots/report.png)
-
-### 👤 Profile
-![Profile](screenshots/profile.png)
 
 
 
