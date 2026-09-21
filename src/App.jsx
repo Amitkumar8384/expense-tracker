@@ -10,8 +10,7 @@ import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
 
 const API_URL =
-  `${import.meta.env.VITE_API_URL}/api/expenses`
-
+  'https://expense-tracker-c4xe.onrender.com/api/expenses'
 function App() {
 
   // ===============================
