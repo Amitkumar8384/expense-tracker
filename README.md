@@ -142,3 +142,135 @@ https://expense-tracker-c4xe.onrender.com
                     │       Aiven         │
                     │      Database       │
                     └─────────────────────┘
+
+
+
+
+
+# 📊 Application Flow
+
+```text
+              User
+                │
+                ▼
+        ┌───────────────┐
+        │ Login / Signup│
+        └───────┬───────┘
+                │
+                ▼
+          JWT Authentication
+                │
+                ▼
+        ┌───────────────┐
+        │   Dashboard   │
+        └───────┬───────┘
+                │
+       ┌────────┼────────┐
+       │        │        │
+       ▼        ▼        ▼
+    Expenses  Reports  Profile
+       │        │        │
+       └────────┼────────┘
+                │
+                ▼
+         Express REST API
+                │
+                ▼
+             MySQL
+
+
+
+
+
+
+
+📱 Responsive Experience
+
+The application is designed to work across:
+
+💻 Desktop
+💻 Laptop
+📱 Mobile
+📲 Tablet
+
+The production application has been tested on both desktop and mobile environments.
+
+🧪 Testing
+
+The application has been tested for:
+
+User signup
+User login
+JWT authentication
+Adding expenses
+Editing expenses
+Deleting expenses
+User-specific expense access
+Dashboard calculations
+Reports
+PDF generation
+Production API connectivity
+Desktop usage
+Mobile usage
+🚀 Project Highlights
+
+This project demonstrates practical experience with:
+
+React
+   ↓
+REST APIs
+   ↓
+Node.js
+   ↓
+Express.js
+   ↓
+JWT Authentication
+   ↓
+MySQL
+   ↓
+Cloud Database
+   ↓
+Cloud Deployment
+
+It combines frontend development, backend development, database management, authentication, API development, and cloud deployment into one complete full-stack application.
+
+🔮 Future Improvements
+
+Possible future features include:
+
+Advanced expense filtering
+Budget management
+Monthly budgets
+Recurring expenses
+Financial goals
+CSV export
+Email notifications
+Advanced analytics
+Detailed financial insights
+Multi-currency support
+👨‍💻 Developer
+Amit Kumar
+
+Full-Stack Web Developer
+
+Skills Demonstrated
+HTML
+CSS
+JavaScript
+React
+Node.js
+Express.js
+MySQL
+REST API
+JWT Authentication
+Git & GitHub
+Vercel
+Render
+Aiven Cloud
+⭐ Support
+
+If you like this project, consider giving the repository a ⭐ on GitHub.
+
+📄 License
+
+This project is created for learning, portfolio, and demonstration purposes.
