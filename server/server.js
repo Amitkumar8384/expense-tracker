@@ -443,7 +443,6 @@ app.post(
     }
   }
 )
-
 // ===============================
 // UPDATE USER EXPENSE
 // ===============================
@@ -496,6 +495,18 @@ app.put(
         })
       }
 
+      // Convert date to MySQL DATE format
+      // 2026-09-21T00:00:00.000Z
+      //        ↓
+      // 2026-09-21
+
+      const expenseDate =
+        /^\d{4}-\d{2}-\d{2}$/.test(date)
+          ? date
+          : new Date(date)
+              .toISOString()
+              .split('T')[0]
+
       const [result] = await db.query(
         `
         UPDATE expenses
@@ -514,7 +525,7 @@ app.put(
           numericAmount,
           type,
           category || 'Other',
-          date,
+          expenseDate,
           id,
           req.user.id
         ]
@@ -541,9 +552,8 @@ app.put(
           ]
         )
 
-      res.json(
-        updatedExpense[0]
-      )
+      res.json(updatedExpense[0])
+
     } catch (error) {
       console.error(error)
 
@@ -554,7 +564,6 @@ app.put(
     }
   }
 )
-
 // ===============================
 // DELETE USER EXPENSE
 // ===============================
