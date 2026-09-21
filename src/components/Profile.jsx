@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import './profile.css'
 
 const API_URL =
-  `${import.meta.env.VITE_API_URL}/api/auth/profile`
+  'https://expense-tracker-c4xe.onrender.com/api/auth/profile'
 
 const PASSWORD_API =
-  `${import.meta.env.VITE_API_URL}/api/auth/change-password`
-  
+  'https://expense-tracker-c4xe.onrender.com/api/auth/change-password'
+
 function Profile({
   user,
   onLogout,
