@@ -45,22 +45,51 @@ function Dashboard({ expenses }) {
   // GET DATE
   // ==========================================
 
-  function getExpenseDate(date) {
+ function getExpenseDate(date) {
 
-    if (!date) {
-      return new Date()
-    }
+  if (!date) {
+    return null
+  }
 
-    const [year, month, day] =
-      date.split('-').map(Number)
-
+  if (date instanceof Date) {
     return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    )
+  }
+
+  const dateString =
+    String(date).slice(0, 10)
+
+  const [year, month, day] =
+    dateString.split('-').map(Number)
+
+  if (
+    !year ||
+    !month ||
+    !day
+  ) {
+    return null
+  }
+
+  const parsedDate =
+    new Date(
       year,
       month - 1,
       day
     )
 
+  if (
+    Number.isNaN(
+      parsedDate.getTime()
+    )
+  ) {
+    return null
   }
+
+  return parsedDate
+}
 
 
   // ==========================================
@@ -86,6 +115,9 @@ function Dashboard({ expenses }) {
 
         const date =
           getExpenseDate(item.date)
+          if (!date) {
+  return false
+}
 
         return (
           date.getMonth() ===
@@ -115,6 +147,10 @@ function Dashboard({ expenses }) {
         const date =
           getExpenseDate(item.date)
 
+        if (!date) {
+          return false
+        }
+
         return (
           date >= startDate &&
           date <= today
@@ -141,6 +177,10 @@ function Dashboard({ expenses }) {
         const date =
           getExpenseDate(item.date)
 
+        if (!date) {
+          return false
+        }
+
         return (
           date >= startDate &&
           date <= today
@@ -159,6 +199,10 @@ function Dashboard({ expenses }) {
 
         const date =
           getExpenseDate(item.date)
+
+        if (!date) {
+          return false
+        }
 
         return (
           date.getFullYear() ===
@@ -306,6 +350,10 @@ function Dashboard({ expenses }) {
     const date =
       getExpenseDate(item.date)
 
+      if (!date) {
+  return
+}
+
     const month =
       date.toLocaleString(
         'en-IN',
@@ -313,6 +361,8 @@ function Dashboard({ expenses }) {
           month: 'short'
         }
       )
+
+      
 
     if (!monthlyTotals[month]) {
 
@@ -379,6 +429,10 @@ function Dashboard({ expenses }) {
 
     const date =
       getExpenseDate(item.date)
+
+      if (!date) {
+  return
+}
 
     const key =
       item.date
