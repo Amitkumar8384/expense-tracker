@@ -11,6 +11,14 @@ import Dashboard from './components/Dashboard'
 import Header from './components/Header'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
+import {
+  FaChartColumn,
+  FaHouse,
+  FaMoon,
+  FaRightFromBracket,
+  FaSun,
+  FaUser,
+} from './components/Icons'
 import { apiUrl, getLocalDateString } from './lib/api'
 
 const Profile = lazy(() => import('./components/Profile'))
@@ -493,7 +501,7 @@ const updateExpense = useCallback(
             }}
             aria-current={!showProfile && !showReports ? 'page' : undefined}
           >
-            🏠 Home
+            <FaHouse aria-hidden="true" /> Home
           </button>
 
           <button
@@ -508,7 +516,7 @@ const updateExpense = useCallback(
   }}
   aria-current={showProfile ? 'page' : undefined}
 >
-  👤 Profile
+  <FaUser aria-hidden="true" /> Profile
 </button>
 
 <button
@@ -524,7 +532,7 @@ const updateExpense = useCallback(
   }}
   aria-current={showReports ? 'page' : undefined}
 >
-  📊 Reports
+  <FaChartColumn aria-hidden="true" /> Reports
 </button>
           <button
             type="button"
@@ -533,7 +541,7 @@ const updateExpense = useCallback(
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           >
-            {theme === 'dark' ? '☀️' : '🌙'}
+            {theme === 'dark' ? <FaSun aria-hidden="true" /> : <FaMoon aria-hidden="true" />}
             <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
           </button>
 
@@ -542,7 +550,7 @@ const updateExpense = useCallback(
             className="logout-btn"
             onClick={handleLogout}
           >
-            Logout
+            <FaRightFromBracket aria-hidden="true" /> Logout
           </button>
 
         </div>

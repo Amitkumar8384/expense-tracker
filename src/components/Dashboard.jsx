@@ -15,6 +15,14 @@ import {
   Tooltip,
   Legend
 } from 'recharts'
+import {
+  FaArrowTrendDown,
+  FaArrowTrendUp,
+  FaChartColumn,
+  FaChartLine,
+  FaChartPie,
+  FaIndianRupeeSign,
+} from './Icons'
 
 
 const PIE_COLORS = [
@@ -475,7 +483,7 @@ function Dashboard({ expenses = [] }) {
         <div className="dashboard-title">
 
           <div className="dashboard-icon">
-            ▥
+            <FaChartColumn aria-hidden="true" />
           </div>
 
           <div>
@@ -538,7 +546,7 @@ function Dashboard({ expenses = [] }) {
         <div className="stat-card balance-card">
 
           <div className="stat-icon">
-            ₹
+            <FaIndianRupeeSign aria-hidden="true" />
           </div>
 
           <div className="stat-content">
@@ -561,7 +569,7 @@ function Dashboard({ expenses = [] }) {
         <div className="stat-card income-card">
 
           <div className="stat-icon">
-            ↑
+            <FaArrowTrendUp aria-hidden="true" />
           </div>
 
           <div className="stat-content">
@@ -584,7 +592,7 @@ function Dashboard({ expenses = [] }) {
         <div className="stat-card expense-card">
 
           <div className="stat-icon">
-            ↓
+            <FaArrowTrendDown aria-hidden="true" />
           </div>
 
           <div className="stat-content">
@@ -785,7 +793,7 @@ function Dashboard({ expenses = [] }) {
             <div className="analytics-empty">
 
               <span>
-                📊
+                <FaChartPie aria-hidden="true" />
               </span>
 
               <p>
@@ -923,7 +931,7 @@ function Dashboard({ expenses = [] }) {
           <div className="analytics-empty">
 
             <span>
-              📈
+              <FaChartLine aria-hidden="true" />
             </span>
 
             <p>
@@ -1065,7 +1073,7 @@ function Dashboard({ expenses = [] }) {
         <div className="dashboard-no-data">
 
           <div>
-            📊
+            <FaChartPie aria-hidden="true" />
           </div>
 
           <h3>

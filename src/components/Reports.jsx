@@ -13,6 +13,14 @@ import {
 import './reports.css'
 import { jsPDF } from 'jspdf'
 import { autoTable } from 'jspdf-autotable'
+import {
+  FaArrowTrendDown,
+  FaArrowTrendUp,
+  FaChartPie,
+  FaFileCsv,
+  FaFilePdf,
+  FaIndianRupeeSign,
+} from './Icons'
 
 
 function Reports({ expenses = [] }) {
@@ -465,7 +473,7 @@ function Reports({ expenses = [] }) {
   className="export-btn"
   onClick={exportCSV}
 >
-  ↓ Export CSV
+  <FaFileCsv aria-hidden="true" /> Export CSV
 </button>
 
         <button
@@ -473,7 +481,7 @@ function Reports({ expenses = [] }) {
           className="export-btn export-pdf-btn"
           onClick={exportPDF}
         >
-          ↓ Export PDF
+          <FaFilePdf aria-hidden="true" /> Export PDF
         </button>
 
       </div>
@@ -484,7 +492,7 @@ function Reports({ expenses = [] }) {
 
         <div className="report-stat income">
           <span className="report-stat-icon">
-            ↑
+            <FaArrowTrendUp aria-hidden="true" />
           </span>
 
           <div>
@@ -498,7 +506,7 @@ function Reports({ expenses = [] }) {
 
         <div className="report-stat expense">
           <span className="report-stat-icon">
-            ↓
+            <FaArrowTrendDown aria-hidden="true" />
           </span>
 
           <div>
@@ -512,7 +520,7 @@ function Reports({ expenses = [] }) {
 
         <div className="report-stat balance">
           <span className="report-stat-icon">
-            ₹
+            <FaIndianRupeeSign aria-hidden="true" />
           </span>
 
           <div>
@@ -628,7 +636,7 @@ function Reports({ expenses = [] }) {
           {categoryData.length === 0 ? (
 
             <div className="reports-empty">
-              <div>📊</div>
+              <div><FaChartPie aria-hidden="true" /></div>
 
               <h3>
                 No expense data

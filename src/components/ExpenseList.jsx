@@ -1,3 +1,11 @@
+import {
+  FaArrowTrendDown,
+  FaArrowTrendUp,
+  FaChartColumn,
+  FaPen,
+  FaTrash,
+} from './Icons'
+
 function ExpenseList({
   expenses,
   onDelete,
@@ -33,7 +41,7 @@ function ExpenseList({
         <div className="empty-state">
 
           <div className="empty-icon">
-            $
+            <FaChartColumn aria-hidden="true" />
           </div>
 
           <h3>
@@ -70,8 +78,8 @@ function ExpenseList({
                   }`}
                 >
                   {expense.type === 'income'
-                    ? '+'
-                    : '-'}
+                    ? <FaArrowTrendUp aria-hidden="true" />
+                    : <FaArrowTrendDown aria-hidden="true" />}
                 </div>
 
 
@@ -116,8 +124,8 @@ function ExpenseList({
                 >
 
                   {expense.type === 'income'
-                    ? '+'
-                    : '-'}
+                    ? <FaArrowTrendUp aria-hidden="true" />
+                    : <FaArrowTrendDown aria-hidden="true" />}
 
                   ₹
                   {Number(
@@ -134,7 +142,7 @@ function ExpenseList({
                     onEdit(expense.id)
                   }
                 >
-                  Edit
+                  <FaPen aria-hidden="true" /> Edit
                 </button>
 
 
@@ -154,7 +162,7 @@ function ExpenseList({
 
                   }}
                 >
-                  Delete
+                  <FaTrash aria-hidden="true" /> Delete
                 </button>
 
               </div>

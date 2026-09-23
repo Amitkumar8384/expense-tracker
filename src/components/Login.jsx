@@ -1,5 +1,16 @@
 import { useState } from 'react'
 import { apiUrl } from '../lib/api'
+import {
+  FaCircleCheck,
+  FaCircleExclamation,
+  FaEnvelope,
+  FaEye,
+  FaEyeSlash,
+  FaIndianRupeeSign,
+  FaLock,
+  FaUser,
+  FaUserShield,
+} from './Icons'
 
 function isStrongPassword(password) {
   return (
@@ -148,7 +159,7 @@ function Login({ onLogin }) {
 
       <div className="auth-intro" aria-hidden="true">
 
-        <div className="auth-intro-mark">₹</div>
+        <div className="auth-intro-mark"><FaIndianRupeeSign aria-hidden="true" /></div>
 
         <p className="auth-intro-kicker">PERSONAL FINANCE, SIMPLIFIED</p>
 
@@ -161,7 +172,7 @@ function Login({ onLogin }) {
         <div className="auth-intro-points">
           <span><b>↗</b> Live balance overview</span>
           <span><b>◌</b> Clear monthly reports</span>
-          <span><b>✓</b> Private and secure</span>
+          <span><b><FaCircleCheck aria-hidden="true" /></b> Private and secure</span>
         </div>
 
       </div>
@@ -173,7 +184,7 @@ function Login({ onLogin }) {
         <div className="auth-brand">
 
           <div className="auth-logo">
-            ₹
+            <FaIndianRupeeSign aria-hidden="true" />
           </div>
 
           <h1>Expense Tracker</h1>
@@ -243,14 +254,14 @@ function Login({ onLogin }) {
 
         {error && (
           <div className="auth-message auth-error">
-            <span>⚠</span>
+            <span><FaCircleExclamation aria-hidden="true" /></span>
             {error}
           </div>
         )}
 
         {success && (
           <div className="auth-message auth-success">
-            <span>✓</span>
+            <span><FaCircleCheck aria-hidden="true" /></span>
             {success}
           </div>
         )}
@@ -276,7 +287,7 @@ function Login({ onLogin }) {
               <div className="input-wrapper">
 
                 <span className="input-icon">
-                  👤
+                  <FaUser aria-hidden="true" />
                 </span>
 
                 <input
@@ -309,7 +320,7 @@ function Login({ onLogin }) {
             <div className="input-wrapper">
 
               <span className="input-icon">
-                ✉
+                <FaEnvelope aria-hidden="true" />
               </span>
 
               <input
@@ -340,7 +351,7 @@ function Login({ onLogin }) {
             <div className="input-wrapper">
 
               <span className="input-icon">
-                🔒
+                <FaLock aria-hidden="true" />
               </span>
 
               <input
@@ -378,7 +389,7 @@ function Login({ onLogin }) {
                     : 'Show password'
                 }
               >
-                {showPassword ? '🙈' : '👁'}
+                {showPassword ? <FaEyeSlash aria-hidden="true" /> : <FaEye aria-hidden="true" />}
               </button>
 
             </div>
@@ -448,7 +459,7 @@ function Login({ onLogin }) {
         {/* FOOTER */}
 
         <div className="auth-footer">
-          🔐 Your account is protected with secure authentication.
+          <FaUserShield aria-hidden="true" /> Your account is protected with secure authentication.
         </div>
 
       </div>

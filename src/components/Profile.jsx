@@ -1,6 +1,21 @@
 import { useEffect, useState } from 'react'
 import './profile.css'
 import { apiUrl } from '../lib/api'
+import {
+  FaCalendarDays,
+  FaCircle,
+  FaCircleCheck,
+  FaCircleExclamation,
+  FaEnvelope,
+  FaEye,
+  FaEyeSlash,
+  FaHashtag,
+  FaKey,
+  FaLock,
+  FaShieldHalved,
+  FaUser,
+  FaUserShield,
+} from './Icons'
 
 const PROFILE_API_URL = apiUrl('/api/auth/profile')
 const PASSWORD_API_URL = apiUrl('/api/auth/change-password')
@@ -412,7 +427,7 @@ function Profile({
         <div className="profile-error-card">
 
           <div className="profile-error-icon">
-            !
+            <FaCircleExclamation aria-hidden="true" />
           </div>
 
           <h2>
@@ -469,7 +484,7 @@ function Profile({
             </h1>
 
             <span className="profile-verified">
-              ✓ Verified
+              <FaCircleCheck aria-hidden="true" /> Verified
             </span>
 
           </div>
@@ -528,7 +543,7 @@ function Profile({
             <div className="profile-detail">
 
               <div className="profile-detail-icon">
-                👤
+                <FaUser aria-hidden="true" />
               </div>
 
               <div>
@@ -548,7 +563,7 @@ function Profile({
             <div className="profile-detail">
 
               <div className="profile-detail-icon">
-                ✉
+                <FaEnvelope aria-hidden="true" />
               </div>
 
               <div>
@@ -568,7 +583,7 @@ function Profile({
             <div className="profile-detail">
 
               <div className="profile-detail-icon">
-                #
+                <FaHashtag aria-hidden="true" />
               </div>
 
               <div>
@@ -588,7 +603,7 @@ function Profile({
             <div className="profile-detail">
 
               <div className="profile-detail-icon">
-                ◷
+                <FaCalendarDays aria-hidden="true" />
               </div>
 
               <div>
@@ -618,7 +633,7 @@ function Profile({
         <aside className="profile-side-card">
 
           <div className="profile-side-icon">
-            🔐
+            <FaShieldHalved aria-hidden="true" />
           </div>
 
           <span className="profile-eyebrow">
@@ -695,7 +710,7 @@ function Profile({
           </div>
 
           <div className="profile-password-icon">
-            🔑
+            <FaKey aria-hidden="true" />
           </div>
 
         </div>
@@ -703,7 +718,7 @@ function Profile({
         {passwordError && (
 
           <div className="password-message password-message-error">
-            <span>!</span>
+            <span><FaCircleExclamation aria-hidden="true" /></span>
             {passwordError}
           </div>
 
@@ -712,7 +727,7 @@ function Profile({
         {passwordSuccess && (
 
           <div className="password-message password-message-success">
-            <span>✓</span>
+            <span><FaCircleCheck aria-hidden="true" /></span>
             {passwordSuccess}
           </div>
 
@@ -734,7 +749,7 @@ function Profile({
             <div className="password-input-wrapper">
 
               <span className="password-field-icon">
-                🔒
+                <FaLock aria-hidden="true" />
               </span>
 
               <input
@@ -768,8 +783,8 @@ function Profile({
                 }
               >
                 {showCurrentPassword
-                  ? '🙈'
-                  : '👁️'}
+                  ? <FaEyeSlash aria-hidden="true" />
+                  : <FaEye aria-hidden="true" />}
               </button>
 
             </div>
@@ -787,7 +802,7 @@ function Profile({
             <div className="password-input-wrapper">
 
               <span className="password-field-icon">
-                🔑
+                <FaKey aria-hidden="true" />
               </span>
 
               <input
@@ -826,8 +841,8 @@ function Profile({
                 }
               >
                 {showNewPassword
-                  ? '🙈'
-                  : '👁️'}
+                  ? <FaEyeSlash aria-hidden="true" />
+                  : <FaEye aria-hidden="true" />}
               </button>
 
             </div>
@@ -889,7 +904,7 @@ function Profile({
             <div className="password-input-wrapper">
 
               <span className="password-field-icon">
-                🔐
+                <FaUserShield aria-hidden="true" />
               </span>
 
               <input
@@ -928,8 +943,8 @@ function Profile({
                 }
               >
                 {showConfirmPassword
-                  ? '🙈'
-                  : '👁️'}
+                  ? <FaEyeSlash aria-hidden="true" />
+                  : <FaEye aria-hidden="true" />}
               </button>
 
             </div>
@@ -954,8 +969,8 @@ function Profile({
                 }
               >
                 {newPassword.length >= 8
-                  ? '✓'
-                  : '○'}
+                  ? <FaCircleCheck aria-hidden="true" />
+                  : <FaCircle aria-hidden="true" />}
                 At least 8 characters
               </span>
 
@@ -967,8 +982,8 @@ function Profile({
                 }
               >
                 {/[A-Z]/.test(newPassword)
-                  ? '✓'
-                  : '○'}
+                  ? <FaCircleCheck aria-hidden="true" />
+                  : <FaCircle aria-hidden="true" />}
                 Uppercase letter
               </span>
 
@@ -980,8 +995,8 @@ function Profile({
                 }
               >
                 {/[a-z]/.test(newPassword)
-                  ? '✓'
-                  : '○'}
+                  ? <FaCircleCheck aria-hidden="true" />
+                  : <FaCircle aria-hidden="true" />}
                 Lowercase letter
               </span>
 
@@ -993,8 +1008,8 @@ function Profile({
                 }
               >
                 {/[0-9]/.test(newPassword)
-                  ? '✓'
-                  : '○'}
+                  ? <FaCircleCheck aria-hidden="true" />
+                  : <FaCircle aria-hidden="true" />}
                 Number
               </span>
 
@@ -1006,8 +1021,8 @@ function Profile({
                 }
               >
                 {/[^A-Za-z0-9]/.test(newPassword)
-                  ? '✓'
-                  : '○'}
+                  ? <FaCircleCheck aria-hidden="true" />
+                  : <FaCircle aria-hidden="true" />}
                 Special character
               </span>
 
@@ -1030,7 +1045,7 @@ function Profile({
               </>
             ) : (
               <>
-                🔐
+                <FaShieldHalved aria-hidden="true" />
                 Update Password
               </>
             )}
