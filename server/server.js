@@ -14,10 +14,13 @@ app.set('trust proxy', 1)
 
 const PORT = process.env.PORT || 5000
 const isProduction = process.env.NODE_ENV === 'production'
-const allowedOrigins = (process.env.FRONTEND_ORIGIN || 'http://localhost:5173')
-  .split(',')
-  .map((origin) => origin.trim())
-  .filter(Boolean)
+const allowedOrigins = [
+  ...(process.env.FRONTEND_ORIGIN || 'http://localhost:5173')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+  'https://expense-tracker-lyart-beta-32.vercel.app',
+]
 
 const sessionCookieOptions = {
   httpOnly: true,
