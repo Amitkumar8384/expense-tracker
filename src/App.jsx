@@ -424,7 +424,11 @@ const updateExpense = useCallback(
   // ===============================
 
   if (sessionChecking) {
-    return <div className="api-message">Restoring your session...</div>
+    return (
+      <div className="session-loading" role="status" aria-label="Loading">
+        <span className="auth-spinner" />
+      </div>
+    )
   }
 
   if (!user) {
