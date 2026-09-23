@@ -4020,12 +4020,15 @@ html[data-theme="light"] .auth-card .password-toggle {
 }
 
 .notification-center {
-  position: relative;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
   z-index: 20;
   display: flex;
   align-items: center;
   height: 36px;
   flex: 0 0 36px;
+  filter: drop-shadow(0 12px 22px rgba(2, 6, 23, 0.28));
 }
 
 .notification-trigger {
@@ -4068,8 +4071,8 @@ html[data-theme="light"] .auth-card .password-toggle {
 
 .notification-popover {
   position: absolute;
-  top: calc(100% + 12px);
   right: 0;
+  bottom: calc(100% + 12px);
   width: min(330px, calc(100vw - 28px));
   padding: 13px;
   color: var(--text);
@@ -4101,6 +4104,30 @@ html[data-theme="light"] .auth-card .password-toggle {
 .notification-heading span { color: var(--muted); font-size: 0.66rem; }
 .notification-heading > svg { color: var(--primary-light); }
 
+.notification-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notification-clear,
+.notification-dismiss {
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.notification-clear {
+  font-size: 0.64rem;
+}
+
+.notification-clear:hover,
+.notification-dismiss:hover {
+  color: var(--primary-light);
+}
+
 .notification-item {
   display: flex;
   align-items: flex-start;
@@ -4114,6 +4141,8 @@ html[data-theme="light"] .auth-card .password-toggle {
 .notification-item.warning .notification-item-icon { color: var(--expense-light); }
 .notification-item strong { display: block; font-size: 0.72rem; }
 .notification-item p { margin-top: 3px; color: var(--muted); font-size: 0.66rem; }
+.notification-item > div:nth-child(2) { flex: 1; min-width: 0; }
+.notification-dismiss { flex: 0 0 auto; font-size: 0.7rem; }
 
 .notification-empty {
   display: grid;
@@ -4134,5 +4163,7 @@ html[data-theme="light"] .notification-popover {
 @media (max-width: 600px) {
   .notification-center {
     flex: 0 0 36px;
+    right: 16px;
+    bottom: 16px;
   }
 }
