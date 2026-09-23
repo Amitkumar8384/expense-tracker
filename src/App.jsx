@@ -484,6 +484,18 @@ const updateExpense = useCallback(
         <div className="user-actions">
 
           <button
+            type="button"
+            className="home-btn"
+            onClick={() => {
+              setShowProfile(false)
+              setShowReports(false)
+              localStorage.setItem('currentPage', 'dashboard')
+            }}
+          >
+            🏠 Home
+          </button>
+
+          <button
   type="button"
   className="profile-btn"
   onClick={() => {
