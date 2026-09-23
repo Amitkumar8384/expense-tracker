@@ -13,6 +13,7 @@ import Header from './components/Header'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
 import PlanningPanel from './components/PlanningPanel'
+import NotificationCenter from './components/NotificationCenter'
 import {
   FaChartColumn,
   FaHouse,
@@ -531,6 +532,11 @@ const updateExpense = useCallback(
 
 
         <div className="user-actions">
+
+          <NotificationCenter
+            authFetch={authFetch}
+            expenses={expenses}
+          />
 
           <button
             type="button"
