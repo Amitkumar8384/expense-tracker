@@ -3024,11 +3024,11 @@ html {
 html[data-theme="light"] {
   color-scheme: light;
 
-  --bg: #f4f7fb;
+  --bg: #f3f6fb;
   --surface: #ffffff;
   --surface-2: #f8fafc;
-  --surface-3: #eef2ff;
-  --border: rgba(15, 23, 42, 0.10);
+  --surface-3: #eef4ff;
+  --border: rgba(30, 41, 59, 0.12);
 
   --text: #0f172a;
   --text-soft: #334155;
@@ -3054,6 +3054,12 @@ html[data-theme="light"] body {
     radial-gradient(circle at 92% 8%, rgba(168, 85, 247, 0.05), transparent 25%),
     var(--bg);
 }
+
+  html[data-theme="light"] .dashboard {
+    background:
+    radial-gradient(circle at 100% 0, rgba(99, 102, 241, 0.08), transparent 30%),
+    linear-gradient(145deg, #ffffff, #f8fafc) !important;
+  }
 
 html[data-theme="light"] header h1 {
   background: linear-gradient(100deg, #0f172a, #4f46e5, #7c3aed);
@@ -3122,6 +3128,43 @@ html[data-theme="light"] .summary-cards > div {
   background: #ffffff;
   border-color: rgba(15, 23, 42, 0.08);
   box-shadow: 0 8px 25px rgba(15, 23, 42, 0.045);
+}
+
+html[data-theme="light"] .stat-card:hover,
+html[data-theme="light"] .analytics-card:hover {
+  background: #ffffff;
+  border-color: rgba(79, 70, 229, 0.28);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.10);
+}
+
+html[data-theme="light"] .dashboard-title h2,
+html[data-theme="light"] .stat-content h3 {
+  color: #0f172a;
+}
+
+html[data-theme="light"] .analytics-chart .recharts-cartesian-grid-horizontal line,
+html[data-theme="light"] .analytics-chart .recharts-cartesian-grid-vertical line {
+  stroke: rgba(71, 85, 105, 0.16);
+}
+
+html[data-theme="light"] .analytics-chart .recharts-text,
+html[data-theme="light"] .analytics-chart .recharts-legend-item-text {
+  fill: #64748b;
+  color: #64748b;
+}
+
+html[data-theme="light"] .analytics-empty,
+html[data-theme="light"] .dashboard-no-data {
+  color: #64748b;
+}
+
+html[data-theme="light"] .category-row:hover {
+  background: #f8fafc;
+  border-color: rgba(79, 70, 229, 0.14);
+}
+
+html[data-theme="light"] .category-progress {
+  background: rgba(100, 116, 139, 0.14);
 }
 
 html[data-theme="light"] .analytics-card-header h3,
@@ -3300,10 +3343,15 @@ html[data-theme="light"] .auth-card h2 {
 
 /* Theme transition */
 body,
+html,
 .app > section,
 .user-bar,
+.dashboard-icon,
 .stat-card,
+.stat-icon,
 .analytics-card,
+.category-row,
+.dashboard-no-data,
 .reports-card,
 .profile-card,
 .profile-security-card,
@@ -3313,10 +3361,23 @@ input,
 select,
 button {
   transition:
+    background 0.28s ease,
     background-color 0.22s ease,
     border-color 0.22s ease,
     color 0.22s ease,
-    box-shadow 0.22s ease;
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
 /* =========================================
    REPORTS BUTTON
