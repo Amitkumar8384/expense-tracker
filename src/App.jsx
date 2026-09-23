@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from 'react'
 import Login from './components/Login'
@@ -40,13 +41,14 @@ function App() {
   // PROFILE PAGE
   // ===============================
 
-  const [showProfile, setShowProfile] = useState(() => {
-    return localStorage.getItem('currentPage') === 'profile'
+  const [currentPage, setCurrentPage] = useState(() => {
+    return localStorage.getItem('currentPage') || 'dashboard'
   })
 
-  const [showReports, setShowReports] = useState(() => {
-    return localStorage.getItem('currentPage') === 'reports'
-  })
+  const navigateTo = useCallback((page) => {
+    setCurrentPage(page)
+    localStorage.setItem('currentPage', page)
+  }, [])
 
   // ===============================
   // THEME
@@ -101,6 +103,46 @@ function App() {
   const [editingExpense, setEditingExpense] =
     useState(null)
 
+  const editModalRef = useRef(null)
+
+  useEffect(() => {
+    if (!editingExpense) return undefined
+
+    const firstField = editModalRef.current?.querySelector('input, select')
+    firstField?.focus()
+
+    function handleModalKeyDown(event) {
+      if (event.key === 'Escape') {
+        setEditingExpense(null)
+        return
+      }
+
+      if (event.key !== 'Tab') return
+
+      const focusable = Array.from(
+        editModalRef.current?.querySelectorAll(
+          'button:not([disabled]), input:not([disabled]), select:not([disabled])'
+        ) || []
+      )
+
+      if (focusable.length === 0) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleModalKeyDown)
+    return () => document.removeEventListener('keydown', handleModalKeyDown)
+  }, [editingExpense])
+
 
   // ===============================
   // AUTHENTICATED REQUESTS
@@ -111,8 +153,7 @@ function App() {
 
     setUser(null)
     setExpenses([])
-    setShowProfile(false)
-    setShowReports(false)
+    setCurrentPage('dashboard')
   }, [])
 
   const authFetch = useCallback(
@@ -445,9 +486,7 @@ const updateExpense = useCallback(
       <Login
        onLogin={(loggedInUser) => {
   setUser(loggedInUser)
-  setShowProfile(false)
-  setShowReports(false)
-  localStorage.setItem('currentPage', 'dashboard')
+  navigateTo('dashboard')
 }}
       />
     )
@@ -493,44 +532,27 @@ const updateExpense = useCallback(
 
           <button
             type="button"
-            className={`home-btn ${!showProfile && !showReports ? 'is-active' : ''}`}
-            onClick={() => {
-              setShowProfile(false)
-              setShowReports(false)
-              localStorage.setItem('currentPage', 'dashboard')
-            }}
-            aria-current={!showProfile && !showReports ? 'page' : undefined}
+            className={`home-btn ${currentPage === 'dashboard' ? 'is-active' : ''}`}
+            onClick={() => navigateTo('dashboard')}
+            aria-current={currentPage === 'dashboard' ? 'page' : undefined}
           >
             <FaHouse aria-hidden="true" /> Home
           </button>
 
           <button
   type="button"
-  className={`profile-btn ${showProfile ? 'is-active' : ''}`}
-  onClick={() => {
-    setShowProfile(true)
-    localStorage.setItem(
-      'currentPage',
-      'profile'
-    )
-  }}
-  aria-current={showProfile ? 'page' : undefined}
+  className={`profile-btn ${currentPage === 'profile' ? 'is-active' : ''}`}
+  onClick={() => navigateTo('profile')}
+  aria-current={currentPage === 'profile' ? 'page' : undefined}
 >
   <FaUser aria-hidden="true" /> Profile
 </button>
 
 <button
   type="button"
-  className={`reports-btn ${showReports ? 'is-active' : ''}`}
-  onClick={() => {
-    setShowReports(true)
-    setShowProfile(false)
-    localStorage.setItem(
-      'currentPage',
-      'reports'
-    )
-  }}
-  aria-current={showReports ? 'page' : undefined}
+  className={`reports-btn ${currentPage === 'reports' ? 'is-active' : ''}`}
+  onClick={() => navigateTo('reports')}
+  aria-current={currentPage === 'reports' ? 'page' : undefined}
 >
   <FaChartColumn aria-hidden="true" /> Reports
 </button>
@@ -568,31 +590,17 @@ const updateExpense = useCallback(
           </div>
         }
       >
-{showProfile ? (
+{currentPage === 'profile' ? (
 
   <Profile
     user={user}
     onLogout={handleLogout}
-    onBack={() => {
-      setShowProfile(false)
-      localStorage.setItem(
-        'currentPage',
-        'dashboard'
-      )
-    }}
   />
 
-) : showReports ? (
+) : currentPage === 'reports' ? (
 
   <Reports
     expenses={expenses}
-    onBack={() => {
-      setShowReports(false)
-      localStorage.setItem(
-        'currentPage',
-        'dashboard'
-      )
-    }}
   />
 
 ) : (
@@ -614,7 +622,7 @@ const updateExpense = useCallback(
     =============================== */}
 
     {error && (
-      <div className="api-error">
+      <div className="api-error" role="alert">
         {error}
       </div>
     )}
@@ -681,11 +689,12 @@ const updateExpense = useCallback(
 
               <div className="filter-field">
 
-                <label>
+                <label htmlFor="filter-search">
                   Search
                 </label>
 
-                <input
+                  <input
+                    id="filter-search"
                   type="text"
                   placeholder="Search transaction..."
                   value={search}
@@ -703,11 +712,12 @@ const updateExpense = useCallback(
 
               <div className="filter-field">
 
-                <label>
+                <label htmlFor="filter-category">
                   Category
                 </label>
 
                 <select
+                  id="filter-category"
                   value={categoryFilter}
                   onChange={(e) =>
                     setCategoryFilter(
@@ -761,11 +771,12 @@ const updateExpense = useCallback(
 
               <div className="filter-field">
 
-                <label>
+                <label htmlFor="filter-date">
                   Date
                 </label>
 
                 <input
+                  id="filter-date"
                   type="date"
                   value={dateFilter}
                   onChange={(e) =>
@@ -820,7 +831,13 @@ const updateExpense = useCallback(
 
             <div className="modal-overlay">
 
-              <div className="edit-modal">
+              <div
+                className="edit-modal"
+                ref={editModalRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="edit-transaction-title"
+              >
 
 
                 {/* MODAL HEADER */}
@@ -829,7 +846,7 @@ const updateExpense = useCallback(
 
                   <div>
 
-                    <h2>
+                    <h2 id="edit-transaction-title">
                       Edit Transaction
                     </h2>
 
@@ -844,6 +861,7 @@ const updateExpense = useCallback(
                   <button
                     type="button"
                     className="modal-close"
+                    aria-label="Close edit transaction dialog"
                     onClick={
                       closeEditModal
                     }
@@ -940,11 +958,12 @@ const updateExpense = useCallback(
 
                   <div className="modal-field">
 
-                    <label>
+                    <label htmlFor="edit-title">
                       Transaction Title
                     </label>
 
                     <input
+                      id="edit-title"
                       name="title"
                       type="text"
                       defaultValue={
@@ -960,11 +979,12 @@ const updateExpense = useCallback(
 
                   <div className="modal-field">
 
-                    <label>
+                    <label htmlFor="edit-amount">
                       Amount
                     </label>
 
                     <input
+                      id="edit-amount"
                       name="amount"
                       type="number"
                       min="1"
@@ -986,11 +1006,12 @@ const updateExpense = useCallback(
 
                     <div className="modal-field">
 
-                      <label>
+                      <label htmlFor="edit-type">
                         Type
                       </label>
 
                       <select
+                        id="edit-type"
                         name="type"
                         defaultValue={
                           editingExpense.type
@@ -1014,11 +1035,12 @@ const updateExpense = useCallback(
 
                     <div className="modal-field">
 
-                      <label>
+                      <label htmlFor="edit-category">
                         Category
                       </label>
 
                       <select
+                        id="edit-category"
                         name="category"
                         defaultValue={
                           editingExpense.category ||

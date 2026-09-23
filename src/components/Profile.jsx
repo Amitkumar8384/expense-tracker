@@ -716,7 +716,7 @@ function Profile({
 
         {passwordError && (
 
-          <div className="password-message password-message-error">
+          <div className="password-message password-message-error" role="alert">
             <span><FaCircleExclamation aria-hidden="true" /></span>
             {passwordError}
           </div>
@@ -725,7 +725,7 @@ function Profile({
 
         {passwordSuccess && (
 
-          <div className="password-message password-message-success">
+          <div className="password-message password-message-success" role="status" aria-live="polite">
             <span><FaCircleCheck aria-hidden="true" /></span>
             {passwordSuccess}
           </div>
@@ -741,7 +741,7 @@ function Profile({
 
           <div className="password-field">
 
-            <label>
+            <label htmlFor="current-password">
               Current password
             </label>
 
@@ -752,6 +752,7 @@ function Profile({
               </span>
 
               <input
+                id="current-password"
                 type={
                   showCurrentPassword
                     ? 'text'
@@ -781,7 +782,7 @@ function Profile({
 
           <div className="password-field">
 
-            <label>
+            <label htmlFor="new-password">
               New password
             </label>
 
@@ -792,6 +793,7 @@ function Profile({
               </span>
 
               <input
+                id="new-password"
                 type={
                   showNewPassword
                     ? 'text'
@@ -870,7 +872,7 @@ function Profile({
 
           <div className="password-field">
 
-            <label>
+            <label htmlFor="confirm-password">
               Confirm new password
             </label>
 
@@ -881,6 +883,7 @@ function Profile({
               </span>
 
               <input
+                id="confirm-password"
                 type={
                   showConfirmPassword
                     ? 'text'

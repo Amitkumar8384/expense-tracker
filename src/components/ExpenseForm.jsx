@@ -70,7 +70,9 @@ function ExpenseForm({ onAddExpense }) {
 
         {/* Title */}
 
+        <label className="sr-only" htmlFor="transaction-title">Transaction title</label>
         <input
+          id="transaction-title"
           type="text"
           placeholder="Transaction title"
           value={title}
@@ -84,7 +86,9 @@ function ExpenseForm({ onAddExpense }) {
 
         {/* Amount */}
 
+        <label className="sr-only" htmlFor="transaction-amount">Amount</label>
         <input
+          id="transaction-amount"
           type="number"
           min="0.01"
           step="0.01"
@@ -100,7 +104,9 @@ function ExpenseForm({ onAddExpense }) {
 
         {/* Type */}
 
+        <label className="sr-only" htmlFor="transaction-type">Type</label>
         <select
+          id="transaction-type"
           value={type}
           onChange={(e) =>
             setType(e.target.value)
@@ -121,7 +127,9 @@ function ExpenseForm({ onAddExpense }) {
 
         {/* Category */}
 
+        <label className="sr-only" htmlFor="transaction-category">Category</label>
         <select
+          id="transaction-category"
           value={category}
           onChange={(e) =>
             setCategory(e.target.value)

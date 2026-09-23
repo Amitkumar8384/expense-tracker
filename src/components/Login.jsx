@@ -252,14 +252,14 @@ function Login({ onLogin }) {
         {/* MESSAGES */}
 
         {error && (
-          <div className="auth-message auth-error">
+          <div className="auth-message auth-error" role="alert">
             <span><FaCircleExclamation aria-hidden="true" /></span>
             {error}
           </div>
         )}
 
         {success && (
-          <div className="auth-message auth-success">
+          <div className="auth-message auth-success" role="status" aria-live="polite">
             <span><FaCircleCheck aria-hidden="true" /></span>
             {success}
           </div>

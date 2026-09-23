@@ -623,7 +623,7 @@ function Dashboard({ expenses = [] }) {
             INCOME VS EXPENSE
         ================================= */}
 
-        <div className="analytics-card">
+        <div className="analytics-card" role="region" aria-label="Income versus expense chart">
 
           <div className="analytics-card-header">
 
@@ -713,7 +713,7 @@ function Dashboard({ expenses = [] }) {
             CATEGORY BREAKDOWN
         ================================= */}
 
-        <div className="analytics-card">
+        <div className="analytics-card" role="region" aria-label="Expense category breakdown chart">
 
           <div className="analytics-card-header">
 
@@ -814,7 +814,7 @@ function Dashboard({ expenses = [] }) {
           SPENDING TREND
       ===================================== */}
 
-      <div className="analytics-card trend-card">
+      <div className="analytics-card trend-card" role="region" aria-label="Spending trend chart">
 
         <div className="analytics-card-header">
 
@@ -952,7 +952,7 @@ function Dashboard({ expenses = [] }) {
 
       {categoryData.length > 0 && (
 
-        <div className="analytics-card">
+        <div className="analytics-card" role="region" aria-label="Top spending categories">
 
           <div className="analytics-card-header">
 

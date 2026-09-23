@@ -587,20 +587,18 @@
   }
 
   .reports-table-wrapper {
-    overflow: hidden;
+    overflow-x: auto;
+    padding-bottom: 4px;
   }
 
   .reports-table {
-    min-width: 0;
-    table-layout: fixed;
+    min-width: 520px;
   }
 
   .reports-table th,
   .reports-table td {
-    overflow: hidden;
     padding: 10px 5px;
     font-size: 10px;
-    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
@@ -608,35 +606,8 @@
     letter-spacing: 0;
   }
 
-  .reports-table th:nth-child(1),
-  .reports-table td:nth-child(1) {
-    width: 20%;
-  }
-
-  .reports-table th:nth-child(2),
-  .reports-table td:nth-child(2) {
-    width: 19%;
-  }
-
-  .reports-table th:nth-child(3),
-  .reports-table td:nth-child(3) {
-    width: 23%;
-  }
-
-  .reports-table th:nth-child(4),
-  .reports-table td:nth-child(4) {
-    width: 15%;
-  }
-
-  .reports-table th:nth-child(5),
-  .reports-table td:nth-child(5) {
-    width: 23%;
-  }
-
   .reports-table td strong {
     display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .report-type {

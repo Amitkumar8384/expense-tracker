@@ -544,7 +544,7 @@ function Reports({ expenses = [] }) {
 
       {/* CONTENT */}
       <div className="reports-grid">
-        <div className="reports-card reports-chart-card">
+        <div className="reports-card reports-chart-card" role="region" aria-label="Monthly income and expense chart">
 
   <div className="reports-card-header">
 
@@ -613,7 +613,7 @@ function Reports({ expenses = [] }) {
 </div>
 
         {/* CATEGORY */}
-        <div className="reports-card">
+        <div className="reports-card" role="region" aria-label="Monthly category spending">
 
           <div className="reports-card-header">
 
