@@ -146,6 +146,26 @@ function Login({ onLogin }) {
 
     <div className="auth-page">
 
+      <div className="auth-intro" aria-hidden="true">
+
+        <div className="auth-intro-mark">₹</div>
+
+        <p className="auth-intro-kicker">PERSONAL FINANCE, SIMPLIFIED</p>
+
+        <h2>See your money clearly.</h2>
+
+        <p className="auth-intro-copy">
+          Track income, understand spending and make better decisions from one calm dashboard.
+        </p>
+
+        <div className="auth-intro-points">
+          <span><b>↗</b> Live balance overview</span>
+          <span><b>◌</b> Clear monthly reports</span>
+          <span><b>✓</b> Private and secure</span>
+        </div>
+
+      </div>
+
       <div className="auth-card">
 
         {/* BRAND */}
