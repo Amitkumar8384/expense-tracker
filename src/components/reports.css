@@ -604,29 +604,33 @@
     white-space: nowrap;
   }
 
+  .reports-table th {
+    letter-spacing: 0;
+  }
+
   .reports-table th:nth-child(1),
   .reports-table td:nth-child(1) {
-    width: 25%;
+    width: 20%;
   }
 
   .reports-table th:nth-child(2),
   .reports-table td:nth-child(2) {
-    width: 22%;
+    width: 19%;
   }
 
   .reports-table th:nth-child(3),
   .reports-table td:nth-child(3) {
-    width: 24%;
+    width: 23%;
   }
 
   .reports-table th:nth-child(4),
   .reports-table td:nth-child(4) {
-    width: 13%;
+    width: 15%;
   }
 
   .reports-table th:nth-child(5),
   .reports-table td:nth-child(5) {
-    width: 16%;
+    width: 23%;
   }
 
   .reports-table td strong {
@@ -636,7 +640,15 @@
   }
 
   .report-type {
+    max-width: 100%;
+    overflow: hidden;
     padding: 4px 5px;
+    font-size: 9px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .reports-table td:nth-child(5) {
     font-size: 9px;
   }
 }
