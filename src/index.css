@@ -3522,6 +3522,30 @@ html[data-theme="light"] .user-actions .reports-btn:hover {
   }
 }
 
+/* Password visibility buttons must not inherit the primary form button motion. */
+form .password-toggle,
+form .password-show-btn {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  filter: none;
+  transform: translateY(-50%);
+}
+
+form .password-toggle:hover,
+form .password-toggle:active,
+form .password-toggle:focus,
+form .password-show-btn:hover,
+form .password-show-btn:active,
+form .password-show-btn:focus {
+  box-shadow: none;
+  filter: none;
+  transform: translateY(-50%);
+}
+
 /* =========================================================
    AUTH PRODUCT SHELL
    ========================================================= */
