@@ -2884,6 +2884,21 @@ form button:hover {
   border-top-color: var(--primary-light);
 }
 
+.inline-loader {
+  display: grid;
+  place-items: center;
+  min-height: 74px;
+  color: var(--primary-light);
+}
+
+.inline-loader .auth-spinner {
+  width: 22px;
+  height: 22px;
+  border-width: 2px;
+  border-color: rgba(129, 140, 248, 0.22);
+  border-top-color: var(--primary-light);
+}
+
 @keyframes auth-spin {
   to {
     transform: rotate(360deg);

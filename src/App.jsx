@@ -561,7 +561,13 @@ const updateExpense = useCallback(
     PROFILE
 =============================== */}
 
-<Suspense fallback={<div className="api-message">Loading page...</div>}>
+      <Suspense
+        fallback={
+          <div className="session-loading" role="status" aria-label="Loading page">
+            <span className="auth-spinner" />
+          </div>
+        }
+      >
 {showProfile ? (
 
   <Profile
@@ -598,8 +604,8 @@ const updateExpense = useCallback(
     =============================== */}
 
     {loading && (
-      <div className="api-message">
-        Loading transactions...
+      <div className="inline-loader" role="status" aria-label="Loading transactions">
+        <span className="auth-spinner" />
       </div>
     )}
 
