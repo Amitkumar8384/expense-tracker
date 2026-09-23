@@ -1,8 +1,8 @@
 import {
-  FaArrowTrendDown,
-  FaArrowTrendUp,
   FaChartColumn,
+  FaMinus,
   FaPen,
+  FaPlus,
   FaTrash,
 } from './Icons'
 
@@ -78,8 +78,8 @@ function ExpenseList({
                   }`}
                 >
                   {expense.type === 'income'
-                    ? <FaArrowTrendUp aria-hidden="true" />
-                    : <FaArrowTrendDown aria-hidden="true" />}
+                    ? <FaPlus aria-hidden="true" />
+                    : <FaMinus aria-hidden="true" />}
                 </div>
 
 
@@ -124,8 +124,8 @@ function ExpenseList({
                 >
 
                   {expense.type === 'income'
-                    ? <FaArrowTrendUp aria-hidden="true" />
-                    : <FaArrowTrendDown aria-hidden="true" />}
+                    ? <FaPlus aria-hidden="true" />
+                    : <FaMinus aria-hidden="true" />}
 
                   ₹
                   {Number(
