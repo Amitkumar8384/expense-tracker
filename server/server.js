@@ -527,6 +527,139 @@ app.get(
 // GET USER EXPENSES
 // ===============================
 
+app.get('/api/budgets', authenticateToken, async (req, res) => {
+  try {
+    const month = typeof req.query.month === 'string' ? req.query.month : getUtcDateString().slice(0, 7)
+
+    if (!/^\d{4}-\d{2}$/.test(month)) {
+      return res.status(400).json({ message: 'Month must use the YYYY-MM format' })
+    }
+
+    const [budgets] = await db.query(
+      `
+      SELECT
+        b.id,
+        b.category,
+        b.monthly_limit,
+        COALESCE(SUM(CASE WHEN e.type = 'expense' THEN e.amount ELSE 0 END), 0) AS spent
+      FROM budgets b
+      LEFT JOIN expenses e
+        ON e.user_id = b.user_id
+        AND e.category = b.category
+        AND DATE_FORMAT(e.date, '%Y-%m') = b.month
+      WHERE b.user_id = ? AND b.month = ?
+      GROUP BY b.id, b.category, b.monthly_limit
+      ORDER BY b.category
+      `,
+      [req.user.id, month]
+    )
+
+    res.json(budgets)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Failed to fetch budgets' })
+  }
+})
+
+app.post('/api/budgets', authenticateToken, async (req, res) => {
+  try {
+    const category = typeof req.body.category === 'string' ? req.body.category.trim() : ''
+    const month = typeof req.body.month === 'string' ? req.body.month : ''
+    const monthlyLimit = Number(req.body.monthlyLimit)
+
+    if (!category || !/^\d{4}-\d{2}$/.test(month) || !Number.isFinite(monthlyLimit) || monthlyLimit <= 0) {
+      return res.status(400).json({ message: 'Category, valid month and positive monthly limit are required' })
+    }
+
+    await db.query(
+      `
+      INSERT INTO budgets (user_id, category, monthly_limit, month)
+      VALUES (?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE monthly_limit = VALUES(monthly_limit)
+      `,
+      [req.user.id, category, monthlyLimit, month]
+    )
+
+    res.status(201).json({ message: 'Budget saved successfully' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Failed to save budget' })
+  }
+})
+
+app.get('/api/recurring', authenticateToken, async (req, res) => {
+  try {
+    const [templates] = await db.query(
+      `SELECT id, title, amount, type, category, day_of_month, is_active FROM recurring_transactions WHERE user_id = ? ORDER BY id DESC`,
+      [req.user.id]
+    )
+    res.json(templates)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Failed to fetch recurring transactions' })
+  }
+})
+
+app.post('/api/recurring', authenticateToken, async (req, res) => {
+  try {
+    const title = typeof req.body.title === 'string' ? req.body.title.trim() : ''
+    const category = typeof req.body.category === 'string' ? req.body.category.trim() : 'Other'
+    const amount = Number(req.body.amount)
+    const type = req.body.type
+    const dayOfMonth = Number(req.body.dayOfMonth)
+
+    if (!title || !Number.isFinite(amount) || amount <= 0 || !['income', 'expense'].includes(type) || !Number.isInteger(dayOfMonth) || dayOfMonth < 1 || dayOfMonth > 31) {
+      return res.status(400).json({ message: 'Title, positive amount, type and day 1-31 are required' })
+    }
+
+    const [result] = await db.query(
+      `INSERT INTO recurring_transactions (user_id, title, amount, type, category, day_of_month) VALUES (?, ?, ?, ?, ?, ?)`,
+      [req.user.id, title, amount, type, category || 'Other', dayOfMonth]
+    )
+
+    const [templates] = await db.query(
+      `SELECT id, title, amount, type, category, day_of_month, is_active FROM recurring_transactions WHERE id = ?`,
+      [result.insertId]
+    )
+    res.status(201).json(templates[0])
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Failed to create recurring transaction' })
+  }
+})
+
+app.post('/api/recurring/:id/run', authenticateToken, async (req, res) => {
+  try {
+    const [templates] = await db.query(
+      `SELECT title, amount, type, category FROM recurring_transactions WHERE id = ? AND user_id = ? AND is_active = TRUE`,
+      [Number(req.params.id), req.user.id]
+    )
+
+    if (templates.length === 0) return res.status(404).json({ message: 'Recurring transaction not found' })
+
+    const template = templates[0]
+    const [result] = await db.query(
+      `INSERT INTO expenses (user_id, title, amount, type, category, date) VALUES (?, ?, ?, ?, ?, ?)`,
+      [req.user.id, template.title, template.amount, template.type, template.category, getUtcDateString()]
+    )
+    const [expenses] = await db.query(`SELECT * FROM expenses WHERE id = ?`, [result.insertId])
+    res.status(201).json(expenses[0])
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Failed to run recurring transaction' })
+  }
+})
+
+app.delete('/api/recurring/:id', authenticateToken, async (req, res) => {
+  try {
+    await db.query(`DELETE FROM recurring_transactions WHERE id = ? AND user_id = ?`, [Number(req.params.id), req.user.id])
+    res.json({ message: 'Recurring transaction removed' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Failed to remove recurring transaction' })
+  }
+})
+
 app.get(
   '/api/expenses',
   authenticateToken,

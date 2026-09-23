@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard'
 import Header from './components/Header'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
+import PlanningPanel from './components/PlanningPanel'
 import {
   FaChartColumn,
   FaHouse,
@@ -92,8 +93,8 @@ function App() {
   const [categoryFilter, setCategoryFilter] =
     useState('all')
 
-  const [dateFilter, setDateFilter] =
-    useState('')
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateTo, setDateTo] = useState('')
 
 
   // ===============================
@@ -448,13 +449,13 @@ const updateExpense = useCallback(
         categoryFilter === 'all' ||
         item.category === categoryFilter
 
-      const matchesDate =
-        !dateFilter ||
-        item.date === dateFilter
+      const itemDate = String(item.date).slice(0, 10)
+      const matchesDateFrom = !dateFrom || itemDate >= dateFrom
+      const matchesDateTo = !dateTo || itemDate <= dateTo
 
-      return matchesSearch && matchesCategory && matchesDate
+      return matchesSearch && matchesCategory && matchesDateFrom && matchesDateTo
     })
-  }, [expenses, search, categoryFilter, dateFilter])
+  }, [expenses, search, categoryFilter, dateFrom, dateTo])
 
 
   // ===============================
@@ -464,7 +465,8 @@ const updateExpense = useCallback(
   const clearFilters = useCallback(() => {
     setSearch('')
     setCategoryFilter('all')
-    setDateFilter('')
+    setDateFrom('')
+    setDateTo('')
   }, [])
 
 
@@ -643,6 +645,13 @@ const updateExpense = useCallback(
             onAddExpense={addExpense}
           />
 
+          <PlanningPanel
+            authFetch={authFetch}
+            onExpenseCreated={(expense) => {
+              setExpenses(prevExpenses => [expense, ...prevExpenses])
+            }}
+          />
+
 
           {/* ===============================
               FILTERS
@@ -668,7 +677,8 @@ const updateExpense = useCallback(
 
               {(search ||
                 categoryFilter !== 'all' ||
-                dateFilter) && (
+                dateFrom ||
+                dateTo) && (
 
                 <button
                   type="button"
@@ -771,21 +781,32 @@ const updateExpense = useCallback(
 
               <div className="filter-field">
 
-                <label htmlFor="filter-date">
-                  Date
+                <label htmlFor="filter-date-from">
+                  From date
                 </label>
 
                 <input
-                  id="filter-date"
+                  id="filter-date-from"
                   type="date"
-                  value={dateFilter}
+                  value={dateFrom}
                   onChange={(e) =>
-                    setDateFilter(
+                    setDateFrom(
                       e.target.value
                     )
                   }
                 />
 
+              </div>
+
+              <div className="filter-field">
+                <label htmlFor="filter-date-to">To date</label>
+                <input
+                  id="filter-date-to"
+                  type="date"
+                  value={dateTo}
+                  min={dateFrom || undefined}
+                  onChange={(e) => setDateTo(e.target.value)}
+                />
               </div>
 
             </div>

@@ -24,6 +24,7 @@ export {
   FaHashtag,
   FaMoon,
   FaPen,
+  FaPlay,
   FaRightFromBracket,
   FaReceipt,
   FaShieldHalved,
