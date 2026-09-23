@@ -1285,6 +1285,7 @@ form button:hover {
   font-size: 15px;
   opacity: 1;
   transform: translateY(-50%);
+  transition: background 180ms ease, color 180ms ease;
 }
 
 .password-toggle svg {
@@ -1297,6 +1298,11 @@ form button:hover {
 .password-toggle:hover {
   background: rgba(148, 163, 184, 0.16) !important;
   opacity: 1;
+}
+
+.password-toggle:focus,
+.password-toggle:active {
+  transform: translateY(-50%);
 }
 
 .auth-submit {

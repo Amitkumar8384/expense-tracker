@@ -486,6 +486,7 @@
   font-size: 13px;
   opacity: 1;
   transform: translateY(-50%);
+  transition: background 180ms ease, color 180ms ease;
 }
 
 .password-show-btn svg {
@@ -498,6 +499,11 @@
 .password-show-btn:hover {
   background: rgba(148, 163, 184, 0.08) !important;
   opacity: 1;
+}
+
+.password-show-btn:focus,
+.password-show-btn:active {
+  transform: translateY(-50%);
 }
 
 /* strength */
