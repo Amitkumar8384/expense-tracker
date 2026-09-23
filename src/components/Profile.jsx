@@ -429,7 +429,7 @@ function Profile({
             className="profile-back-btn"
             onClick={onBack}
           >
-            ← Back to Dashboard
+            ← Back to Home
           </button>
 
         </div>
@@ -455,7 +455,7 @@ function Profile({
           className="profile-back-btn"
           onClick={onBack}
         >
-          ← Dashboard
+          ← Home
         </button>
 
         <span className="profile-page-label">
@@ -638,7 +638,7 @@ function Profile({
           <div className="profile-side-icon">
             🔐
           </div>
-
+              ← Home
           <span className="profile-eyebrow">
             SECURITY
           </span>
@@ -665,7 +665,7 @@ function Profile({
             <strong>
               Secure
             </strong>
-
+                    ← Back to Home
           </div>
 
           <div className="profile-security-row">

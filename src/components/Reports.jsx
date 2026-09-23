@@ -429,13 +429,13 @@ function Reports({ expenses = [], onBack }) {
 
       {/* HEADER */}
       <div className="reports-header">
-        <button
-    type="button"
-    className="reports-back-btn"
-    onClick={onBack}
-  >
-    ← Dashboard
-  </button>
+          <button
+            type="button"
+            className="reports-back-btn"
+            onClick={onBack}
+          >
+            ← Home
+          </button>
 
         <div>
           <span className="reports-eyebrow">
