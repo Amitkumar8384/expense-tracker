@@ -7,8 +7,6 @@ import {
   FaCircleCheck,
   FaCircleExclamation,
   FaEnvelope,
-  FaEye,
-  FaEyeSlash,
   FaHashtag,
   FaKey,
   FaLock,
@@ -16,6 +14,7 @@ import {
   FaUser,
   FaUserShield,
 } from './Icons'
+import PasswordVisibilityButton from './PasswordVisibilityButton'
 
 const PROFILE_API_URL = apiUrl('/api/auth/profile')
 const PASSWORD_API_URL = apiUrl('/api/auth/change-password')
@@ -768,24 +767,11 @@ function Profile({
                 autoComplete="current-password"
               />
 
-              <button
-                type="button"
+              <PasswordVisibilityButton
                 className="password-show-btn"
-                onClick={() =>
-                  setShowCurrentPassword(
-                    value => !value
-                  )
-                }
-                aria-label={
-                  showCurrentPassword
-                    ? 'Hide password'
-                    : 'Show password'
-                }
-              >
-                {showCurrentPassword
-                  ? <FaEyeSlash aria-hidden="true" />
-                  : <FaEye aria-hidden="true" />}
-              </button>
+                visible={showCurrentPassword}
+                onClick={() => setShowCurrentPassword(value => !value)}
+              />
 
             </div>
 
@@ -826,24 +812,11 @@ function Profile({
                 autoComplete="new-password"
               />
 
-              <button
-                type="button"
+              <PasswordVisibilityButton
                 className="password-show-btn"
-                onClick={() =>
-                  setShowNewPassword(
-                    value => !value
-                  )
-                }
-                aria-label={
-                  showNewPassword
-                    ? 'Hide password'
-                    : 'Show password'
-                }
-              >
-                {showNewPassword
-                  ? <FaEyeSlash aria-hidden="true" />
-                  : <FaEye aria-hidden="true" />}
-              </button>
+                visible={showNewPassword}
+                onClick={() => setShowNewPassword(value => !value)}
+              />
 
             </div>
 
@@ -928,24 +901,11 @@ function Profile({
                 autoComplete="new-password"
               />
 
-              <button
-                type="button"
+              <PasswordVisibilityButton
                 className="password-show-btn"
-                onClick={() =>
-                  setShowConfirmPassword(
-                    value => !value
-                  )
-                }
-                aria-label={
-                  showConfirmPassword
-                    ? 'Hide password'
-                    : 'Show password'
-                }
-              >
-                {showConfirmPassword
-                  ? <FaEyeSlash aria-hidden="true" />
-                  : <FaEye aria-hidden="true" />}
-              </button>
+                visible={showConfirmPassword}
+                onClick={() => setShowConfirmPassword(value => !value)}
+              />
 
             </div>
 

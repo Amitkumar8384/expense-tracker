@@ -4,13 +4,12 @@ import {
   FaCircleCheck,
   FaCircleExclamation,
   FaEnvelope,
-  FaEye,
-  FaEyeSlash,
   FaIndianRupeeSign,
   FaLock,
   FaUser,
   FaUserShield,
 } from './Icons'
+import PasswordVisibilityButton from './PasswordVisibilityButton'
 
 function isStrongPassword(password) {
   return (
@@ -374,23 +373,12 @@ function Login({ onLogin }) {
                 disabled={loading}
               />
 
-              <button
-                type="button"
+              <PasswordVisibilityButton
                 className="password-toggle"
-                onClick={() =>
-                  setShowPassword(
-                    !showPassword
-                  )
-                }
+                visible={showPassword}
+                onClick={() => setShowPassword(value => !value)}
                 disabled={loading}
-                aria-label={
-                  showPassword
-                    ? 'Hide password'
-                    : 'Show password'
-                }
-              >
-                {showPassword ? <FaEyeSlash aria-hidden="true" /> : <FaEye aria-hidden="true" />}
-              </button>
+              />
 
             </div>
 
