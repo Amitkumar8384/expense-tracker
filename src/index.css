@@ -429,6 +429,10 @@ header p {
   margin-top: 16px;
 }
 
+.dashboard > .trend-card + .analytics-card {
+  margin-top: 16px;
+}
+
 .analytics-empty {
   display: grid;
   place-items: center;
