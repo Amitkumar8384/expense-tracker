@@ -1280,10 +1280,10 @@ form button:hover {
   justify-content: center;
   border: 0;
   border-radius: 7px;
-  background: transparent !important;
-  color: var(--muted);
+  background: rgba(148, 163, 184, 0.08) !important;
+  color: #cbd5e1;
   font-size: 15px;
-  opacity: 0.7;
+  opacity: 1;
   transform: translateY(-50%);
 }
 
@@ -1291,10 +1291,11 @@ form button:hover {
   width: 16px;
   height: 16px;
   flex: 0 0 auto;
+  fill: currentColor;
 }
 
 .password-toggle:hover {
-  background: #f1f5f9;
+  background: rgba(148, 163, 184, 0.16) !important;
   opacity: 1;
 }
 

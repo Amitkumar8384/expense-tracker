@@ -480,11 +480,11 @@
   place-items: center;
   border: 0;
   border-radius: 7px;
-  background: transparent !important;
+  background: rgba(148, 163, 184, 0.08) !important;
   cursor: pointer;
-  color: var(--muted, #64748b);
+  color: #cbd5e1 !important;
   font-size: 13px;
-  opacity: 0.65;
+  opacity: 1;
   transform: translateY(-50%);
 }
 
@@ -492,10 +492,11 @@
   width: 15px;
   height: 15px;
   flex: 0 0 auto;
+  fill: currentColor;
 }
 
 .password-show-btn:hover {
-  background: var(--surface-2, rgba(148, 163, 184, 0.10));
+  background: rgba(148, 163, 184, 0.16) !important;
   opacity: 1;
 }
 
