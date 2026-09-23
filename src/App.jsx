@@ -485,19 +485,20 @@ const updateExpense = useCallback(
 
           <button
             type="button"
-            className="home-btn"
+            className={`home-btn ${!showProfile && !showReports ? 'is-active' : ''}`}
             onClick={() => {
               setShowProfile(false)
               setShowReports(false)
               localStorage.setItem('currentPage', 'dashboard')
             }}
+            aria-current={!showProfile && !showReports ? 'page' : undefined}
           >
             🏠 Home
           </button>
 
           <button
   type="button"
-  className="profile-btn"
+  className={`profile-btn ${showProfile ? 'is-active' : ''}`}
   onClick={() => {
     setShowProfile(true)
     localStorage.setItem(
@@ -505,13 +506,14 @@ const updateExpense = useCallback(
       'profile'
     )
   }}
+  aria-current={showProfile ? 'page' : undefined}
 >
   👤 Profile
 </button>
 
 <button
   type="button"
-  className="reports-btn"
+  className={`reports-btn ${showReports ? 'is-active' : ''}`}
   onClick={() => {
     setShowReports(true)
     setShowProfile(false)
@@ -520,6 +522,7 @@ const updateExpense = useCallback(
       'reports'
     )
   }}
+  aria-current={showReports ? 'page' : undefined}
 >
   📊 Reports
 </button>

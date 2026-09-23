@@ -154,7 +154,6 @@ header p {
   display: flex;
   align-items: center;
   gap: 8px;
-  order: -1;
 }
 
 .home-btn,
@@ -179,6 +178,13 @@ header p {
 .profile-btn:hover {
   color: #fff;
   background: rgba(99, 102, 241, 0.17);
+}
+
+.user-actions .is-active {
+  color: #ffffff;
+  background: rgba(99, 102, 241, 0.28);
+  border-color: rgba(129, 140, 248, 0.6);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 .logout-btn {
@@ -3117,6 +3123,13 @@ html[data-theme="light"] .home-btn:hover,
 html[data-theme="light"] .reports-btn:hover {
   color: #312e81;
   background: rgba(79, 70, 229, 0.13);
+}
+
+html[data-theme="light"] .user-actions .is-active {
+  color: #3730a3;
+  background: #e0e7ff;
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 html[data-theme="light"] .theme-toggle-btn {
