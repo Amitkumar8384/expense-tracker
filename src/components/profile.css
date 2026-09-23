@@ -496,7 +496,7 @@
 }
 
 .password-show-btn:hover {
-  background: rgba(148, 163, 184, 0.16) !important;
+  background: rgba(148, 163, 184, 0.08) !important;
   opacity: 1;
 }
 
