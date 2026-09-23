@@ -7,7 +7,7 @@ import {
   useState
 } from 'react'
 import Login from './components/Login'
-const Dashboard = lazy(() => import('./components/Dashboard'))
+import Dashboard from './components/Dashboard'
 import Header from './components/Header'
 import Summary from './components/Summary'
 import ExpenseForm from './components/ExpenseForm'
@@ -436,12 +436,12 @@ const updateExpense = useCallback(
 
     return (
       <Login
-        onLogin={(loggedInUser) => {
-
-          setUser(loggedInUser)
-          setShowProfile(false)
-
-        }}
+       onLogin={(loggedInUser) => {
+  setUser(loggedInUser)
+  setShowProfile(false)
+  setShowReports(false)
+  localStorage.setItem('currentPage', 'dashboard')
+}}
       />
     )
 

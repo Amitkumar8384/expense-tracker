@@ -1259,15 +1259,8 @@ form button:hover {
   }
 
   .profile-btn,
-  .reports-btn,
-  .theme-toggle-btn,
   .logout-btn {
     flex: 1;
-  }
-
-
-  .reports-btn {
-    min-width: 0;
   }
 
   .summary-cards {
@@ -2945,62 +2938,3 @@ button {
     color 0.22s ease,
     box-shadow 0.22s ease;
 }
-
-/* =========================================================
-   FINAL REPORTS BUTTON OVERRIDE
-   Keeps Reports consistent even if later generic button
-   selectors are added to this stylesheet.
-   ========================================================= */
-
-.user-actions > .reports-btn {
-  appearance: none;
-  -webkit-appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 36px;
-  min-height: 36px;
-  padding: 0 13px;
-  margin: 0;
-
-  color: var(--text-soft);
-  background: rgba(99, 102, 241, 0.09);
-  border: 1px solid rgba(99, 102, 241, 0.22);
-  border-radius: 9px;
-
-  font: inherit;
-  font-size: 0.73rem;
-  font-weight: 650;
-  line-height: 1;
-  white-space: nowrap;
-
-  box-shadow: none;
-  text-decoration: none;
-}
-
-.user-actions > .reports-btn:hover {
-  color: #fff;
-  background: rgba(99, 102, 241, 0.17);
-  border-color: rgba(99, 102, 241, 0.35);
-}
-
-html[data-theme="light"] .user-actions > .reports-btn {
-  color: #4338ca;
-  background: rgba(79, 70, 229, 0.07);
-  border-color: rgba(79, 70, 229, 0.18);
-}
-
-html[data-theme="light"] .user-actions > .reports-btn:hover {
-  color: #312e81;
-  background: rgba(79, 70, 229, 0.13);
-  border-color: rgba(79, 70, 229, 0.28);
-}
-
-@media (max-width: 600px) {
-  .user-actions > .reports-btn {
-    flex: 1;
-    min-width: 0;
-  }
-}
-
