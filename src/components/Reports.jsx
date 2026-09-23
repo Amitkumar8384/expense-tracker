@@ -20,6 +20,7 @@ import {
   FaFileCsv,
   FaFilePdf,
   FaIndianRupeeSign,
+  FaReceipt,
 } from './Icons'
 
 
@@ -781,7 +782,7 @@ function Reports({ expenses = [] }) {
         {monthExpenses.length === 0 ? (
 
           <div className="reports-empty">
-            <div>🧾</div>
+            <div><FaReceipt aria-hidden="true" /></div>
 
             <h3>
               No transactions

@@ -25,6 +25,7 @@ export {
   FaMoon,
   FaPen,
   FaRightFromBracket,
+  FaReceipt,
   FaShieldHalved,
   FaSun,
   FaTrash,
