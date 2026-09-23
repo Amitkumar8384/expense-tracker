@@ -471,16 +471,27 @@
 .password-show-btn {
   position: absolute;
   right: 5px;
+  top: 50%;
+  min-width: 33px;
   width: 33px;
   height: 33px;
+  padding: 0;
   display: grid;
   place-items: center;
   border: 0;
   border-radius: 7px;
-  background: transparent;
+  background: transparent !important;
   cursor: pointer;
+  color: var(--muted, #64748b);
   font-size: 13px;
   opacity: 0.65;
+  transform: translateY(-50%);
+}
+
+.password-show-btn svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
 }
 
 .password-show-btn:hover {
