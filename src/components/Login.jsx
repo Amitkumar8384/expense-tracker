@@ -97,7 +97,10 @@ function Login({ onLogin }) {
         }
       )
 
-      const data = await response.json()
+      const contentType = response.headers.get('content-type') || ''
+      const data = contentType.includes('application/json')
+        ? await response.json()
+        : { message: `Login service returned ${response.status}` }
 
       if (!response.ok) {
         throw new Error(

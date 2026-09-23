@@ -1020,6 +1020,24 @@ app.get('/', (req, res) => {
   })
 })
 
+app.use((error, req, res, next) => {
+  console.error(error)
+
+  if (res.headersSent) {
+    return next(error)
+  }
+
+  const status = error.status === 400 || error.type === 'entity.parse.failed'
+    ? 400
+    : 500
+
+  res.status(status).json({
+    message: status === 400
+      ? 'Invalid request'
+      : 'Internal server error'
+  })
+})
+
 // ===============================
 // START SERVER
 // ===============================
