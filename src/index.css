@@ -629,6 +629,12 @@ header p {
   font-size: 0.74rem;
 }
 
+.planning-error {
+  margin-bottom: 12px;
+  color: var(--expense-light);
+  font-size: 0.74rem;
+}
+
 .planning-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

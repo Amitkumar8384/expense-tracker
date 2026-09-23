@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { FaCalendarDays, FaCirclePlus, FaPlay, FaTrash } from './Icons'
-import { apiUrl } from '../lib/api'
+import { apiUrl, getLocalDateString } from '../lib/api'
 
 const CATEGORIES = ['Food', 'Shopping', 'Travel', 'Bills', 'Entertainment', 'Health', 'Salary', 'Other']
 
 function PlanningPanel({ authFetch, onExpenseCreated }) {
-  const currentMonth = new Date().toISOString().slice(0, 7)
+  const currentMonth = getLocalDateString().slice(0, 7)
   const [month, setMonth] = useState(currentMonth)
   const [budgets, setBudgets] = useState([])
   const [recurring, setRecurring] = useState([])
@@ -13,19 +13,26 @@ function PlanningPanel({ authFetch, onExpenseCreated }) {
   const [budgetLimit, setBudgetLimit] = useState('')
   const [recurringForm, setRecurringForm] = useState({ title: '', amount: '', type: 'expense', category: 'Bills', dayOfMonth: '1' })
   const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
 
   useEffect(() => {
     let cancelled = false
 
     async function fetchPlanningData() {
-      const [budgetResponse, recurringResponse] = await Promise.all([
-        authFetch(`${apiUrl('/api/budgets')}?month=${month}`),
-        authFetch(apiUrl('/api/recurring')),
-      ])
+      try {
+        const [budgetResponse, recurringResponse] = await Promise.all([
+          authFetch(`${apiUrl('/api/budgets')}?month=${month}`),
+          authFetch(apiUrl('/api/recurring')),
+        ])
 
-      if (cancelled) return
-      if (budgetResponse?.ok) setBudgets(await budgetResponse.json())
-      if (recurringResponse?.ok) setRecurring(await recurringResponse.json())
+        if (cancelled) return
+        if (!budgetResponse?.ok || !recurringResponse?.ok) throw new Error('Planning data could not be loaded')
+        setBudgets(await budgetResponse.json())
+        setRecurring(await recurringResponse.json())
+        setError('')
+      } catch (loadError) {
+        if (!cancelled) setError(loadError.message)
+      }
     }
 
     fetchPlanningData()
@@ -51,6 +58,8 @@ function PlanningPanel({ authFetch, onExpenseCreated }) {
       setBudgetLimit('')
       setMessage('Budget saved')
       refreshPlanningData()
+    } else {
+      setError('Budget could not be saved. Check the API database tables.')
     }
   }
 
@@ -64,6 +73,8 @@ function PlanningPanel({ authFetch, onExpenseCreated }) {
       setRecurringForm({ title: '', amount: '', type: 'expense', category: 'Bills', dayOfMonth: '1' })
       setMessage('Recurring transaction added')
       refreshPlanningData()
+    } else {
+      setError('Recurring transaction could not be saved.')
     }
   }
 
@@ -73,6 +84,8 @@ function PlanningPanel({ authFetch, onExpenseCreated }) {
       const expense = await response.json()
       onExpenseCreated(expense)
       setMessage('Transaction added from recurring template')
+    } else {
+      setError('Recurring transaction could not be run.')
     }
   }
 
@@ -97,6 +110,7 @@ function PlanningPanel({ authFetch, onExpenseCreated }) {
       </div>
 
       {message && <p className="planning-message" role="status">{message}</p>}
+      {error && <p className="planning-error" role="alert">{error}</p>}
 
       <div className="planning-grid">
         <div className="planning-card">
