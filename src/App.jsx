@@ -96,6 +96,10 @@ function App() {
 
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
+  const [typeFilter, setTypeFilter] = useState('all')
+  const [amountMin, setAmountMin] = useState('')
+  const [amountMax, setAmountMax] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
 
 
   // ===============================
@@ -441,7 +445,7 @@ const updateExpense = useCallback(
   const filteredExpenses = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase()
 
-    return expenses.filter(item => {
+    const filtered = expenses.filter(item => {
       const matchesSearch =
         !normalizedSearch ||
         item.title?.toLowerCase().includes(normalizedSearch)
@@ -453,10 +457,21 @@ const updateExpense = useCallback(
       const itemDate = String(item.date).slice(0, 10)
       const matchesDateFrom = !dateFrom || itemDate >= dateFrom
       const matchesDateTo = !dateTo || itemDate <= dateTo
+      const itemAmount = Number(item.amount) || 0
+      const matchesType = typeFilter === 'all' || item.type === typeFilter
+      const matchesMin = !amountMin || itemAmount >= Number(amountMin)
+      const matchesMax = !amountMax || itemAmount <= Number(amountMax)
 
-      return matchesSearch && matchesCategory && matchesDateFrom && matchesDateTo
+      return matchesSearch && matchesCategory && matchesDateFrom && matchesDateTo && matchesType && matchesMin && matchesMax
     })
-  }, [expenses, search, categoryFilter, dateFrom, dateTo])
+
+    return filtered.sort((first, second) => {
+      if (sortBy === 'oldest') return String(first.date).localeCompare(String(second.date))
+      if (sortBy === 'highest') return Number(second.amount) - Number(first.amount)
+      if (sortBy === 'lowest') return Number(first.amount) - Number(second.amount)
+      return String(second.date).localeCompare(String(first.date))
+    })
+  }, [expenses, search, categoryFilter, dateFrom, dateTo, typeFilter, amountMin, amountMax, sortBy])
 
 
   // ===============================
@@ -468,6 +483,10 @@ const updateExpense = useCallback(
     setCategoryFilter('all')
     setDateFrom('')
     setDateTo('')
+    setTypeFilter('all')
+    setAmountMin('')
+    setAmountMax('')
+    setSortBy('newest')
   }, [])
 
 
@@ -684,7 +703,11 @@ const updateExpense = useCallback(
               {(search ||
                 categoryFilter !== 'all' ||
                 dateFrom ||
-                dateTo) && (
+                dateTo ||
+                typeFilter !== 'all' ||
+                amountMin ||
+                amountMax ||
+                sortBy !== 'newest') && (
 
                 <button
                   type="button"
@@ -813,6 +836,35 @@ const updateExpense = useCallback(
                   min={dateFrom || undefined}
                   onChange={(e) => setDateTo(e.target.value)}
                 />
+              </div>
+
+              <div className="filter-field">
+                <label htmlFor="filter-type">Type</label>
+                <select id="filter-type" value={typeFilter} onChange={event => setTypeFilter(event.target.value)}>
+                  <option value="all">All Types</option>
+                  <option value="income">Income</option>
+                  <option value="expense">Expense</option>
+                </select>
+              </div>
+
+              <div className="filter-field">
+                <label htmlFor="filter-min-amount">Min amount</label>
+                <input id="filter-min-amount" type="number" min="0" placeholder="0" value={amountMin} onChange={event => setAmountMin(event.target.value)} />
+              </div>
+
+              <div className="filter-field">
+                <label htmlFor="filter-max-amount">Max amount</label>
+                <input id="filter-max-amount" type="number" min="0" placeholder="Any" value={amountMax} onChange={event => setAmountMax(event.target.value)} />
+              </div>
+
+              <div className="filter-field">
+                <label htmlFor="filter-sort">Sort by</label>
+                <select id="filter-sort" value={sortBy} onChange={event => setSortBy(event.target.value)}>
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="highest">Highest amount</option>
+                  <option value="lowest">Lowest amount</option>
+                </select>
               </div>
 
             </div>
