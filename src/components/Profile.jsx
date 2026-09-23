@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import './profile.css'
+import { apiUrl } from '../lib/api'
 
-const API_URL =
-  'https://expense-tracker-c4xe.onrender.com/api/auth/profile'
-
-const PASSWORD_API =
-  'https://expense-tracker-c4xe.onrender.com/api/auth/change-password'
+const PROFILE_API_URL = apiUrl('/api/auth/profile')
+const PASSWORD_API_URL = apiUrl('/api/auth/change-password')
 
 function Profile({
   user,
@@ -63,24 +61,9 @@ function Profile({
 
       try {
 
-        const token =
-          localStorage.getItem('token')
-
-        if (!token) {
-
-          setError(
-            'Session expired. Please login again.'
-          )
-
-          return
-        }
-
         const response =
-          await fetch(API_URL, {
-            headers: {
-              Authorization:
-                `Bearer ${token}`
-            }
+          await fetch(PROFILE_API_URL, {
+            credentials: 'include'
           })
 
         if (!response.ok) {
@@ -316,39 +299,22 @@ function Profile({
       return
     }
 
-    // ===============================
-    // TOKEN
-    // ===============================
-
-    const token =
-      localStorage.getItem('token')
-
-    if (!token) {
-
-      setPasswordError(
-        'Session expired. Please login again.'
-      )
-
-      return
-    }
-
     try {
 
       setPasswordLoading(true)
 
       const response =
         await fetch(
-          PASSWORD_API,
+          PASSWORD_API_URL,
           {
             method: 'PUT',
 
             headers: {
               'Content-Type':
-                'application/json',
-
-              Authorization:
-                `Bearer ${token}`
+                'application/json'
             },
+
+            credentials: 'include',
 
             body: JSON.stringify({
               currentPassword,

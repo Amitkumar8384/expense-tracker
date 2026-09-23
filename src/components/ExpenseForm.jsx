@@ -9,9 +9,10 @@ function ExpenseForm({ onAddExpense }) {
   const [type, setType] = useState('expense')
 
   const [category, setCategory] = useState('Food')
+  const [isSaving, setIsSaving] = useState(false)
 
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
 
     e.preventDefault()
 
@@ -32,23 +33,28 @@ function ExpenseForm({ onAddExpense }) {
 
     // Send data to App
 
-    onAddExpense(
-      title.trim(),
-      amount,
-      type,
-      category
-    )
+    setIsSaving(true)
 
+    try {
+      const saved = await onAddExpense(
+        title.trim(),
+        amount,
+        type,
+        category
+      )
 
-    // Clear form
+      if (!saved) return
 
-    setTitle('')
+      setTitle('')
 
-    setAmount('')
+      setAmount('')
 
-    setType('expense')
+      setType('expense')
 
-    setCategory('Food')
+      setCategory('Food')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
 
@@ -71,6 +77,8 @@ function ExpenseForm({ onAddExpense }) {
           onChange={(e) =>
             setTitle(e.target.value)
           }
+          disabled={isSaving}
+          required
         />
 
 
@@ -78,11 +86,15 @@ function ExpenseForm({ onAddExpense }) {
 
         <input
           type="number"
+          min="0.01"
+          step="0.01"
           placeholder="Amount"
           value={amount}
           onChange={(e) =>
             setAmount(e.target.value)
           }
+          disabled={isSaving}
+          required
         />
 
 
@@ -93,6 +105,7 @@ function ExpenseForm({ onAddExpense }) {
           onChange={(e) =>
             setType(e.target.value)
           }
+          disabled={isSaving}
         >
 
           <option value="expense">
@@ -113,6 +126,7 @@ function ExpenseForm({ onAddExpense }) {
           onChange={(e) =>
             setCategory(e.target.value)
           }
+          disabled={isSaving}
         >
 
           <option value="Food">
@@ -152,8 +166,8 @@ function ExpenseForm({ onAddExpense }) {
 
         {/* Submit */}
 
-        <button type="submit">
-          Add Transaction
+        <button type="submit" disabled={isSaving}>
+          {isSaving ? 'Saving...' : 'Add Transaction'}
         </button>
 
       </form>

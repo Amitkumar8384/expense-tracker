@@ -10,19 +10,59 @@ const path = require('path')
 dotenv.config()
 
 const app = express()
+app.set('trust proxy', 1)
 
 const PORT = process.env.PORT || 5000
+const isProduction = process.env.NODE_ENV === 'production'
+const allowedOrigins = (process.env.FRONTEND_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
+
+const sessionCookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  path: '/',
+}
+
+function isStrongPassword(password) {
+  return (
+    password.length >= 8 &&
+    /[A-Z]/.test(password) &&
+    /[a-z]/.test(password) &&
+    /[0-9]/.test(password) &&
+    /[^A-Za-z0-9]/.test(password)
+  )
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+function isValidDate(date) {
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return false
+  }
+
+  const [year, month, day] = date.split('-').map(Number)
+  const parsed = new Date(Date.UTC(year, month - 1, day))
+
+  return (
+    parsed.getUTCFullYear() === year &&
+    parsed.getUTCMonth() === month - 1 &&
+    parsed.getUTCDate() === day
+  )
+}
+
+function getUtcDateString() {
+  return new Date().toISOString().slice(0, 10)
+}
 
 // ===============================
 // CORS CONFIGURATION
 // ===============================
-
-const allowedOrigins = [
-  'http://localhost:5173',
-
-  // Replace this with your actual Vercel URL
-  'https://expense-tracker-lyart-beta-32.vercel.app'
-]
 
 app.use(
   cors({
@@ -130,25 +170,26 @@ function authenticateToken(
   next
 ) {
 
-  const authHeader =
-    req.headers.authorization
+  const cookies = Object.fromEntries(
+    (req.headers.cookie || '')
+      .split(';')
+      .filter(Boolean)
+      .map((cookie) => {
+        const separator = cookie.indexOf('=')
+        return [
+          cookie.slice(0, separator).trim(),
+          decodeURIComponent(cookie.slice(separator + 1)),
+        ]
+      })
+  )
 
-  if (!authHeader) {
-
-    return res.status(401).json({
-      message:
-        'Access token required'
-    })
-  }
-
-  const token =
-    authHeader.split(' ')[1]
+  const token = cookies.session
 
   if (!token) {
 
     return res.status(401).json({
       message:
-        'Invalid authorization format'
+        'Access token required'
     })
   }
 
@@ -164,7 +205,7 @@ function authenticateToken(
 
     next()
 
-  } catch (error) {
+  } catch {
 
     return res.status(403).json({
       message:
@@ -190,9 +231,9 @@ app.post(
       } = req.body
 
       if (
-        !name ||
-        !email ||
-        !password
+        typeof name !== 'string' ||
+        typeof email !== 'string' ||
+        typeof password !== 'string'
       ) {
 
         return res.status(400).json({
@@ -217,13 +258,17 @@ app.post(
         })
       }
 
-      if (
-        password.length < 8
-      ) {
+      if (!isValidEmail(cleanEmail)) {
 
         return res.status(400).json({
-          message:
-            'Password must be at least 8 characters'
+          message: 'Please provide a valid email address'
+        })
+      }
+
+      if (!isStrongPassword(password)) {
+
+        return res.status(400).json({
+          message: 'Password must be 8+ characters and include uppercase, lowercase, number and special character'
         })
       }
 
@@ -378,19 +423,19 @@ app.post(
           }
         )
 
-      res.json({
+      res
+        .cookie('session', token, sessionCookieOptions)
+        .json({
 
         message:
           'Login successful',
-
-        token,
 
         user: {
           id: user.id,
           name: user.name,
           email: user.email
         }
-      })
+        })
 
     } catch (error) {
 
@@ -403,6 +448,21 @@ app.post(
     }
   }
 )
+
+// ===============================
+// LOGOUT
+// ===============================
+
+app.post('/api/auth/logout', (req, res) => {
+  res
+    .clearCookie('session', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
+      path: '/',
+    })
+    .json({ message: 'Logged out successfully' })
+})
 
 // ===============================
 // PROTECTED PROFILE
@@ -515,11 +575,12 @@ app.post(
         date
       } = req.body
 
-      if (
-        !title ||
-        amount === undefined ||
-        !type
-      ) {
+      const cleanTitle = typeof title === 'string' ? title.trim() : ''
+      const cleanCategory = typeof category === 'string' && category.trim()
+        ? category.trim()
+        : 'Other'
+
+      if (!cleanTitle || amount === undefined || !type) {
 
         return res.status(400).json({
           message:
@@ -554,11 +615,14 @@ app.post(
         })
       }
 
-      const expenseDate =
-        date ||
-        new Date()
-          .toISOString()
-          .split('T')[0]
+      const expenseDate = date || getUtcDateString()
+
+      if (!isValidDate(expenseDate)) {
+
+        return res.status(400).json({
+          message: 'Date must use the YYYY-MM-DD format and be a real calendar date'
+        })
+      }
 
       const [result] =
         await db.query(
@@ -576,10 +640,10 @@ app.post(
           `,
           [
             req.user.id,
-            title.trim(),
+            cleanTitle,
             numericAmount,
             type,
-            category || 'Other',
+            cleanCategory,
             expenseDate
           ]
         )
@@ -632,12 +696,19 @@ app.put(
         date
       } = req.body
 
-      if (
-        !title ||
-        amount === undefined ||
-        !type ||
-        !date
-      ) {
+      const cleanTitle = typeof title === 'string' ? title.trim() : ''
+      const cleanCategory = typeof category === 'string' && category.trim()
+        ? category.trim()
+        : 'Other'
+
+      if (!Number.isInteger(id) || id <= 0) {
+
+        return res.status(400).json({
+          message: 'Expense id must be a positive integer'
+        })
+      }
+
+      if (!cleanTitle || amount === undefined || !type || !date) {
 
         return res.status(400).json({
           message:
@@ -672,14 +743,12 @@ app.put(
         })
       }
 
-      // Convert date to MySQL DATE format
+      if (!isValidDate(date)) {
 
-      const expenseDate =
-        /^\d{4}-\d{2}-\d{2}$/.test(date)
-          ? date
-          : new Date(date)
-              .toISOString()
-              .split('T')[0]
+        return res.status(400).json({
+          message: 'Date must use the YYYY-MM-DD format and be a real calendar date'
+        })
+      }
 
       const [result] =
         await db.query(
@@ -696,11 +765,11 @@ app.put(
             AND user_id = ?
           `,
           [
-            title.trim(),
+            cleanTitle,
             numericAmount,
             type,
-            category || 'Other',
-            expenseDate,
+            cleanCategory,
+            date,
             id,
             req.user.id
           ]
@@ -759,6 +828,13 @@ app.delete(
 
       const id =
         Number(req.params.id)
+
+      if (!Number.isInteger(id) || id <= 0) {
+
+        return res.status(400).json({
+          message: 'Expense id must be a positive integer'
+        })
+      }
 
       const [result] =
         await db.query(
@@ -838,24 +914,7 @@ app.put(
         })
       }
 
-      const hasUppercase =
-        /[A-Z]/.test(newPassword)
-
-      const hasLowercase =
-        /[a-z]/.test(newPassword)
-
-      const hasNumber =
-        /[0-9]/.test(newPassword)
-
-      const hasSpecial =
-        /[^A-Za-z0-9]/.test(newPassword)
-
-      if (
-        !hasUppercase ||
-        !hasLowercase ||
-        !hasNumber ||
-        !hasSpecial
-      ) {
+      if (!isStrongPassword(newPassword)) {
 
         return res.status(400).json({
           message:

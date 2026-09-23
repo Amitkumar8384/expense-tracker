@@ -361,52 +361,45 @@ function Reports({ expenses = [], onBack }) {
     doc.save(`expense-report-${selectedMonth}.pdf`)
   }
 
-  // Income
-  const totalIncome = useMemo(() => {
-    return monthExpenses
-      .filter((expense) => expense.type === 'income')
-      .reduce(
-        (total, expense) =>
-          total + Number(expense.amount || 0),
-        0
-      )
-  }, [monthExpenses])
-
-  // Expenses
-  const totalExpense = useMemo(() => {
-    return monthExpenses
-      .filter((expense) => expense.type === 'expense')
-      .reduce(
-        (total, expense) =>
-          total + Number(expense.amount || 0),
-        0
-      )
-  }, [monthExpenses])
-
-  // Balance
-  const balance = totalIncome - totalExpense
-
-  // Category-wise expense
-  const categoryData = useMemo(() => {
+  const reportSummary = useMemo(() => {
+    let totalIncome = 0
+    let totalExpense = 0
     const categories = {}
 
-    monthExpenses
-      .filter((expense) => expense.type === 'expense')
-      .forEach((expense) => {
+    monthExpenses.forEach((expense) => {
+      const amount = Number(expense.amount || 0)
+
+      if (expense.type === 'income') {
+        totalIncome += amount
+        return
+      }
+
+      if (expense.type === 'expense') {
+        totalExpense += amount
         const category = expense.category || 'Other'
 
         categories[category] =
           (categories[category] || 0) +
-          Number(expense.amount || 0)
-      })
+          amount
+      }
+    })
 
-    return Object.entries(categories)
+    const categoryData = Object.entries(categories)
       .map(([category, amount]) => ({
         category,
         amount
       }))
       .sort((a, b) => b.amount - a.amount)
+
+    return {
+      totalIncome,
+      totalExpense,
+      categoryData,
+    }
   }, [monthExpenses])
+
+  const { totalIncome, totalExpense, categoryData } = reportSummary
+  const balance = totalIncome - totalExpense
 
   const selectedMonthName = new Date(
     `${selectedMonth}-01T00:00:00`

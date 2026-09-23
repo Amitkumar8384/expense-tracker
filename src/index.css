@@ -2938,3 +2938,72 @@ button {
     color 0.22s ease,
     box-shadow 0.22s ease;
 }
+/* =========================================
+   REPORTS BUTTON
+========================================= */
+
+.user-actions .reports-btn {
+  appearance: none;
+  -webkit-appearance: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 38px;
+  padding: 0 16px;
+
+  border: 1px solid #303b73;
+  border-radius: 10px;
+
+  background: #171d3d;
+  color: #f1f5ff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-sizing: border-box;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.user-actions .reports-btn:hover {
+  background: #202957;
+  border-color: #4655a0;
+  transform: translateY(-1px);
+}
+
+.user-actions .reports-btn:active {
+  transform: translateY(0);
+}
+
+.user-actions .reports-btn:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+html[data-theme="light"] .user-actions .reports-btn {
+  background: #ffffff;
+  color: #1e293b;
+  border-color: #d5dbea;
+}
+
+html[data-theme="light"] .user-actions .reports-btn:hover {
+  background: #f4f6fb;
+  border-color: #aeb8d4;
+}
+@media (max-width: 600px) {
+  .user-actions .reports-btn {
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+}

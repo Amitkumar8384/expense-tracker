@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import {
   ResponsiveContainer,
@@ -27,6 +27,10 @@ const PIE_COLORS = [
   '#ec4899',
   '#64748b'
 ]
+
+function formatMoney(amount) {
+  return `₹${Number(amount || 0).toLocaleString('en-IN')}`
+}
 
 function MoneyTooltip({
     active,
@@ -97,10 +101,14 @@ function Dashboard({ expenses = [] }) {
 
   function formatMoney(amount) {
 
+    return `₹${Number(amount || 0).toLocaleString('en-IN')}`
+    /*
+
     return `₹${Number(amount).toLocaleString(
       'en-IN'
     )}`
 
+    */
   }
 
 
@@ -159,7 +167,7 @@ function Dashboard({ expenses = [] }) {
   // FILTER BY PERIOD
   // ==========================================
 
-  function filterByPeriod(items) {
+  const filterByPeriod = useCallback((items) => {
     if (period === 'all') {
       return items
     }
@@ -198,7 +206,7 @@ function Dashboard({ expenses = [] }) {
     }
 
     return items
-  }
+  }, [period])
 
 
   // ==========================================
@@ -207,7 +215,7 @@ function Dashboard({ expenses = [] }) {
 
   const periodExpenses = useMemo(
     () => filterByPeriod(expenses),
-    [expenses, period]
+    [expenses, filterByPeriod]
   )
 
 

@@ -1,6 +1,15 @@
 import { useState } from 'react'
+import { apiUrl } from '../lib/api'
 
-const API_URL = 'https://expense-tracker-c4xe.onrender.com'
+function isStrongPassword(password) {
+  return (
+    password.length >= 8 &&
+    /[A-Z]/.test(password) &&
+    /[a-z]/.test(password) &&
+    /[0-9]/.test(password) &&
+    /[^A-Za-z0-9]/.test(password)
+  )
+}
 
 function Login({ onLogin }) {
 
@@ -44,8 +53,13 @@ function Login({ onLogin }) {
       return
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters')
+    if (!password) {
+      setError('Please enter your password')
+      return
+    }
+
+    if (mode === 'signup' && !isStrongPassword(password)) {
+      setError('Use 8+ characters with uppercase, lowercase, number and special character')
       return
     }
 
@@ -71,14 +85,14 @@ function Login({ onLogin }) {
             }
 
       const response = await fetch(
-        `${API_URL}${endpoint}`,
+        apiUrl(endpoint),
         {
           method: 'POST',
 
           headers: {
             'Content-Type': 'application/json'
           },
-
+          credentials: 'include',
           body: JSON.stringify(body)
         }
       )
@@ -94,16 +108,6 @@ function Login({ onLogin }) {
 
       // LOGIN
       if (mode === 'login') {
-
-        localStorage.setItem(
-          'token',
-          data.token
-        )
-
-        localStorage.setItem(
-          'user',
-          JSON.stringify(data.user)
-        )
 
         onLogin(data.user)
 
@@ -358,7 +362,7 @@ function Login({ onLogin }) {
 
             {mode === 'signup' && (
               <small>
-                Use at least 6 characters.
+                Use 8+ characters with uppercase, lowercase, number and special character.
               </small>
             )}
 

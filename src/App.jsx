@@ -12,29 +12,22 @@ import Header from './components/Header'
 import Summary from './components/Summary'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
+import { apiUrl, getLocalDateString } from './lib/api'
 
 const Profile = lazy(() => import('./components/Profile'))
 const Reports = lazy(() => import('./components/Reports'))
 
-const API_URL =
-  'https://expense-tracker-c4xe.onrender.com/api/expenses'
+const EXPENSES_API_URL = apiUrl('/api/expenses')
+const PROFILE_API_URL = apiUrl('/api/auth/profile')
+const LOGOUT_API_URL = apiUrl('/api/auth/logout')
 function App() {
 
   // ===============================
   // USER
   // ===============================
 
-  const [user, setUser] = useState(() => {
-    try {
-      const savedUser = localStorage.getItem('user')
-
-      return savedUser
-        ? JSON.parse(savedUser)
-        : null
-    } catch {
-      return null
-    }
-  })
+  const [user, setUser] = useState(null)
+  const [sessionChecking, setSessionChecking] = useState(true)
 
 
   // ===============================
@@ -104,16 +97,10 @@ const [showReports, setShowReports] = useState(() => {
 
 
   // ===============================
-  // GET TOKEN
+  // AUTHENTICATED REQUESTS
   // ===============================
 
-  const getToken = useCallback(() => {
-    return localStorage.getItem('token')
-  }, [])
-
   const handleUnauthorized = useCallback(() => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
     localStorage.removeItem('currentPage')
 
     setUser(null)
@@ -124,19 +111,12 @@ const [showReports, setShowReports] = useState(() => {
 
   const authFetch = useCallback(
     async (url, options = {}) => {
-      const token = getToken()
-
-      if (!token) {
-        handleUnauthorized()
-        return null
-      }
-
       const response = await fetch(url, {
         ...options,
+        credentials: 'include',
         headers: {
           ...(options.body ? { 'Content-Type': 'application/json' } : {}),
           ...(options.headers || {}),
-          Authorization: `Bearer ${token}`,
         },
       })
 
@@ -147,7 +127,7 @@ const [showReports, setShowReports] = useState(() => {
 
       return response
     },
-    [getToken, handleUnauthorized]
+    [handleUnauthorized]
   )
 
 
@@ -155,7 +135,40 @@ const [showReports, setShowReports] = useState(() => {
   // LOGOUT
   // ===============================
 
-  const handleLogout = handleUnauthorized
+  const handleLogout = useCallback(async () => {
+    try {
+      await fetch(LOGOUT_API_URL, {
+        method: 'POST',
+        credentials: 'include',
+      })
+    } finally {
+      handleUnauthorized()
+    }
+  }, [handleUnauthorized])
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function restoreSession() {
+      try {
+        const response = await fetch(PROFILE_API_URL, {
+          credentials: 'include',
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          if (!cancelled) setUser(data.user)
+        }
+      } catch (error) {
+        console.error('Unable to restore session:', error)
+      } finally {
+        if (!cancelled) setSessionChecking(false)
+      }
+    }
+
+    restoreSession()
+    return () => { cancelled = true }
+  }, [])
 
   // ===============================
   // GET EXPENSES
@@ -174,7 +187,7 @@ const [showReports, setShowReports] = useState(() => {
         setLoading(true)
         setError('')
 
-        const response = await authFetch(API_URL)
+        const response = await authFetch(EXPENSES_API_URL)
 
         if (!response) return
 
@@ -219,10 +232,10 @@ const [showReports, setShowReports] = useState(() => {
           amount: Number(amount),
           type,
           category,
-          date: new Date().toISOString().split('T')[0],
+          date: getLocalDateString(),
         }
 
-        const response = await authFetch(API_URL, {
+        const response = await authFetch(EXPENSES_API_URL, {
           method: 'POST',
           body: JSON.stringify(newExpense),
         })
@@ -239,9 +252,11 @@ const [showReports, setShowReports] = useState(() => {
           savedExpense,
           ...prevExpenses,
         ])
+        return true
       } catch (error) {
         console.error(error)
         alert('Unable to save transaction')
+        return false
       }
     },
     [authFetch]
@@ -255,7 +270,7 @@ const [showReports, setShowReports] = useState(() => {
   const deleteExpense = useCallback(
     async (id) => {
       try {
-        const response = await authFetch(`${API_URL}/${id}`, {
+        const response = await authFetch(`${EXPENSES_API_URL}/${id}`, {
           method: 'DELETE',
         })
 
@@ -299,7 +314,7 @@ const [showReports, setShowReports] = useState(() => {
 const updateExpense = useCallback(
   async updatedExpense => {
     try {
-      const response = await authFetch(`${API_URL}/${updatedExpense.id}`, {
+      const response = await authFetch(`${EXPENSES_API_URL}/${updatedExpense.id}`, {
         method: 'PUT',
         body: JSON.stringify({
           title: updatedExpense.title,
@@ -432,6 +447,10 @@ const updateExpense = useCallback(
   // LOGIN SCREEN
   // ===============================
 
+  if (sessionChecking) {
+    return <div className="api-message">Restoring your session...</div>
+  }
+
   if (!user) {
 
     return (
@@ -539,6 +558,7 @@ const updateExpense = useCallback(
     PROFILE
 =============================== */}
 
+<Suspense fallback={<div className="api-message">Loading page...</div>}>
 {showProfile ? (
 
   <Profile
@@ -1084,6 +1104,7 @@ const updateExpense = useCallback(
         </>
 
       )}
+</Suspense>
 
     </div>
 
