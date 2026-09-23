@@ -1,6 +1,4 @@
-
-
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import {
   ResponsiveContainer,
@@ -19,7 +17,72 @@ import {
 } from 'recharts'
 
 
-function Dashboard({ expenses }) {
+const PIE_COLORS = [
+  '#6366f1',
+  '#f59e0b',
+  '#10b981',
+  '#ef4444',
+  '#8b5cf6',
+  '#06b6d4',
+  '#ec4899',
+  '#64748b'
+]
+
+function MoneyTooltip({
+    active,
+    payload,
+    label
+  }) {
+
+    if (
+      !active ||
+      !payload ||
+      !payload.length
+    ) {
+      return null
+    }
+
+    return (
+
+      <div className="analytics-tooltip">
+
+        {label && (
+          <strong>
+            {label}
+          </strong>
+        )}
+
+        {payload.map(
+          (item, index) => (
+
+            <div
+              key={index}
+              className="tooltip-row"
+            >
+
+              <span>
+                {item.name}
+              </span>
+
+              <strong>
+                {formatMoney(
+                  item.value
+                )}
+              </strong>
+
+            </div>
+
+          )
+        )}
+
+      </div>
+
+    )
+
+  }
+
+
+function Dashboard({ expenses = [] }) {
 
   // ==========================================
   // PERIOD
@@ -97,125 +160,44 @@ function Dashboard({ expenses }) {
   // ==========================================
 
   function filterByPeriod(items) {
-
     if (period === 'all') {
       return items
     }
 
     const today = new Date()
-
     today.setHours(0, 0, 0, 0)
 
-
-    // THIS MONTH
-
     if (period === 'month') {
-
-      return items.filter((item) => {
-
-        const date =
-          getExpenseDate(item.date)
-          if (!date) {
-  return false
-}
-
+      return items.filter(item => {
+        const date = getExpenseDate(item.date)
         return (
-          date.getMonth() ===
-            today.getMonth() &&
-          date.getFullYear() ===
-            today.getFullYear()
+          date &&
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear()
         )
-
       })
-
     }
 
-
-    // LAST 7 DAYS
-
-    if (period === '7days') {
-
-      const startDate =
-        new Date(today)
-
+    if (period === '7days' || period === '30days') {
+      const startDate = new Date(today)
       startDate.setDate(
-        today.getDate() - 6
+        today.getDate() - (period === '7days' ? 6 : 29)
       )
 
-      return items.filter((item) => {
-
-        const date =
-          getExpenseDate(item.date)
-
-        if (!date) {
-          return false
-        }
-
-        return (
-          date >= startDate &&
-          date <= today
-        )
-
+      return items.filter(item => {
+        const date = getExpenseDate(item.date)
+        return date && date >= startDate && date <= today
       })
-
     }
-
-
-    // LAST 30 DAYS
-
-    if (period === '30days') {
-
-      const startDate =
-        new Date(today)
-
-      startDate.setDate(
-        today.getDate() - 29
-      )
-
-      return items.filter((item) => {
-
-        const date =
-          getExpenseDate(item.date)
-
-        if (!date) {
-          return false
-        }
-
-        return (
-          date >= startDate &&
-          date <= today
-        )
-
-      })
-
-    }
-
-
-    // THIS YEAR
 
     if (period === 'year') {
-
-      return items.filter((item) => {
-
-        const date =
-          getExpenseDate(item.date)
-
-        if (!date) {
-          return false
-        }
-
-        return (
-          date.getFullYear() ===
-          today.getFullYear()
-        )
-
+      return items.filter(item => {
+        const date = getExpenseDate(item.date)
+        return date && date.getFullYear() === today.getFullYear()
       })
-
     }
 
-
     return items
-
   }
 
 
@@ -223,53 +205,44 @@ function Dashboard({ expenses }) {
   // PERIOD DATA
   // ==========================================
 
-  const periodExpenses =
-  
-    filterByPeriod(expenses)
+  const periodExpenses = useMemo(
+    () => filterByPeriod(expenses),
+    [expenses, period]
+  )
 
 
   // ==========================================
   // INCOME
   // ==========================================
 
-  const income =
-    periodExpenses
-      .filter(
-        item =>
-          item.type === 'income'
-      )
-      .reduce(
-        (total, item) =>
-          total +
-          Number(item.amount),
-        0
-      )
+  const { income, expense } = useMemo(() => {
+    let incomeTotal = 0
+    let expenseTotal = 0
 
+    periodExpenses.forEach((item) => {
+      const amount = Number(item.amount) || 0
 
-  // ==========================================
-  // EXPENSE
-  // ==========================================
+      if (item.type === 'income') {
+        incomeTotal += amount
+      }
 
-  const expense =
-    periodExpenses
-      .filter(
-        item =>
-          item.type === 'expense'
-      )
-      .reduce(
-        (total, item) =>
-          total +
-          Number(item.amount),
-        0
-      )
+      if (item.type === 'expense') {
+        expenseTotal += amount
+      }
+    })
+
+    return {
+      income: incomeTotal,
+      expense: expenseTotal
+    }
+  }, [periodExpenses])
 
 
   // ==========================================
   // BALANCE
   // ==========================================
 
-  const balance =
-    income - expense
+  const balance = income - expense
 
 
   // ==========================================
@@ -303,284 +276,177 @@ function Dashboard({ expenses }) {
   // CATEGORY ANALYTICS
   // ==========================================
 
-  const categoryTotals = {}
+  const categoryData = useMemo(() => {
+    const categoryTotals = {}
 
-  periodExpenses
-    .filter(
-      item =>
-        item.type === 'expense'
-    )
-    .forEach((item) => {
-
-      const category =
-        item.category || 'Other'
-
-      if (!categoryTotals[category]) {
-        categoryTotals[category] = 0
+    periodExpenses.forEach((item) => {
+      if (item.type !== 'expense') {
+        return
       }
 
-      categoryTotals[category] +=
-        Number(item.amount)
+      const category = item.category || 'Other'
+      const amount = Number(item.amount) || 0
 
+      categoryTotals[category] =
+        (categoryTotals[category] || 0) + amount
     })
 
-
-  const categoryData =
-    Object.entries(categoryTotals)
-      .map(
-        ([category, amount]) => ({
-          category,
-          amount
-        })
-      )
-      .sort(
-        (a, b) =>
-          b.amount - a.amount
-      )
+    return Object.entries(categoryTotals)
+      .map(([category, amount]) => ({
+        category,
+        amount
+      }))
+      .sort((a, b) => b.amount - a.amount)
+  }, [periodExpenses])
 
 
   // ==========================================
   // MONTHLY ANALYTICS
   // ==========================================
 
-  const monthlyTotals = {}
+  const monthlyData = useMemo(() => {
+    const monthlyTotals = {}
 
-  periodExpenses.forEach((item) => {
+    const monthOrder = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ]
 
-    const date =
-      getExpenseDate(item.date)
+    periodExpenses.forEach((item) => {
+      const date = getExpenseDate(item.date)
 
       if (!date) {
-  return
-}
+        return
+      }
 
-    const month =
-      date.toLocaleString(
+      const month = date.toLocaleString(
         'en-IN',
         {
           month: 'short'
         }
       )
 
-      
-
-    if (!monthlyTotals[month]) {
-
-      monthlyTotals[month] = {
-        month,
-        income: 0,
-        expense: 0
+      if (!monthlyTotals[month]) {
+        monthlyTotals[month] = {
+          month,
+          income: 0,
+          expense: 0
+        }
       }
 
-    }
+      const amount = Number(item.amount) || 0
 
-    if (item.type === 'income') {
+      if (item.type === 'income') {
+        monthlyTotals[month].income += amount
+      }
 
-      monthlyTotals[month].income +=
-        Number(item.amount)
+      if (item.type === 'expense') {
+        monthlyTotals[month].expense += amount
+      }
+    })
 
-    }
-
-    if (item.type === 'expense') {
-
-      monthlyTotals[month].expense +=
-        Number(item.amount)
-
-    }
-
-  })
-
-
-  let monthlyData =
-    Object.values(monthlyTotals)
-
-
-  // Sort monthly data chronologically
-
-  const monthOrder = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ]
-
-  monthlyData.sort(
-    (a, b) =>
-      monthOrder.indexOf(a.month) -
-      monthOrder.indexOf(b.month)
-  )
+    return Object.values(monthlyTotals).sort(
+      (a, b) =>
+        monthOrder.indexOf(a.month) -
+        monthOrder.indexOf(b.month)
+    )
+  }, [periodExpenses])
 
 
   // ==========================================
   // DAILY DATA
   // ==========================================
 
-  const dailyTotals = {}
+  const dailyData = useMemo(() => {
+    const dailyTotals = {}
 
-  periodExpenses.forEach((item) => {
-
-    const date =
-      getExpenseDate(item.date)
+    periodExpenses.forEach((item) => {
+      const date = getExpenseDate(item.date)
 
       if (!date) {
-  return
-}
+        return
+      }
 
-    const key =
-      item.date
+      const key = String(item.date).slice(0, 10)
 
-    if (!dailyTotals[key]) {
-
-      dailyTotals[key] = {
-        date: key,
-        label:
-          date.toLocaleDateString(
+      if (!dailyTotals[key]) {
+        dailyTotals[key] = {
+          date: key,
+          label: date.toLocaleDateString(
             'en-IN',
             {
               day: '2-digit',
               month: 'short'
             }
           ),
-        income: 0,
-        expense: 0
+          income: 0,
+          expense: 0
+        }
       }
 
-    }
+      const amount = Number(item.amount) || 0
 
-    if (item.type === 'income') {
+      if (item.type === 'income') {
+        dailyTotals[key].income += amount
+      }
 
-      dailyTotals[key].income +=
-        Number(item.amount)
+      if (item.type === 'expense') {
+        dailyTotals[key].expense += amount
+      }
+    })
 
-    }
-
-    if (item.type === 'expense') {
-
-      dailyTotals[key].expense +=
-        Number(item.amount)
-
-    }
-
-  })
-
-
-  const dailyData =
-    Object.values(dailyTotals)
-      .sort(
-        (a, b) =>
-          new Date(a.date) -
-          new Date(b.date)
-      )
+    return Object.values(dailyTotals).sort(
+      (a, b) =>
+        new Date(a.date) -
+        new Date(b.date)
+    )
+  }, [periodExpenses])
 
 
   // ==========================================
   // MAIN TREND DATA
   // ==========================================
 
-  const trendData =
-    period === 'year'
+  const trendData = useMemo(() => {
+    return period === 'year' || period === 'all'
       ? monthlyData
-      : period === 'all'
-        ? monthlyData
-        : dailyData
+      : dailyData
+  }, [period, monthlyData, dailyData])
 
 
   // ==========================================
   // INCOME / EXPENSE CHART
   // ==========================================
 
-  const comparisonData = [
-    {
-      name: 'Income',
-      amount: income
-    },
-    {
-      name: 'Expense',
-      amount: expense
-    }
-  ]
-
-
-  // ==========================================
-  // COLORS
-  // ==========================================
-
-  const pieColors = [
-    '#6366f1',
-    '#f59e0b',
-    '#10b981',
-    '#ef4444',
-    '#8b5cf6',
-    '#06b6d4',
-    '#ec4899',
-    '#64748b'
-  ]
+  const comparisonData = useMemo(() => {
+    return [
+      {
+        name: 'Income',
+        amount: income
+      },
+      {
+        name: 'Expense',
+        amount: expense
+      }
+    ]
+  }, [income, expense])
 
 
   // ==========================================
   // CUSTOM TOOLTIP
   // ==========================================
 
-  function MoneyTooltip({
-    active,
-    payload,
-    label
-  }) {
 
-    if (
-      !active ||
-      !payload ||
-      !payload.length
-    ) {
-      return null
-    }
-
-    return (
-
-      <div className="analytics-tooltip">
-
-        {label && (
-          <strong>
-            {label}
-          </strong>
-        )}
-
-        {payload.map(
-          (item, index) => (
-
-            <div
-              key={index}
-              className="tooltip-row"
-            >
-
-              <span>
-                {item.name}
-              </span>
-
-              <strong>
-                {formatMoney(
-                  item.value
-                )}
-              </strong>
-
-            </div>
-
-          )
-        )}
-
-      </div>
-
-    )
-
-  }
 
 
   // ==========================================
@@ -880,9 +746,9 @@ function Dashboard({ expenses }) {
                             entry.category
                           }
                           fill={
-                            pieColors[
+                            PIE_COLORS[
                               index %
-                              pieColors.length
+                              PIE_COLORS.length
                             ]
                           }
                         />
@@ -1120,9 +986,9 @@ function Dashboard({ expenses }) {
                           className="category-dot"
                           style={{
                             background:
-                              pieColors[
+                              PIE_COLORS[
                                 index %
-                                pieColors.length
+                                PIE_COLORS.length
                               ]
                           }}
                         />
@@ -1153,9 +1019,9 @@ function Dashboard({ expenses }) {
                               100
                             )}%`,
                           background:
-                            pieColors[
+                            PIE_COLORS[
                               index %
-                              pieColors.length
+                              PIE_COLORS.length
                             ]
                         }}
                       />

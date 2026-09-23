@@ -1,13 +1,20 @@
-import { useEffect, useState } from 'react'
-
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
 import Login from './components/Login'
-import Profile from './components/Profile'
-import Reports from './components/Reports'
-import Dashboard from './components/Dashboard'
+const Dashboard = lazy(() => import('./components/Dashboard'))
 import Header from './components/Header'
 import Summary from './components/Summary'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
+
+const Profile = lazy(() => import('./components/Profile'))
+const Reports = lazy(() => import('./components/Reports'))
 
 const API_URL =
   'https://expense-tracker-c4xe.onrender.com/api/expenses'
@@ -100,17 +107,11 @@ const [showReports, setShowReports] = useState(() => {
   // GET TOKEN
   // ===============================
 
-  function getToken() {
+  const getToken = useCallback(() => {
     return localStorage.getItem('token')
-  }
+  }, [])
 
-
-  // ===============================
-  // LOGOUT
-  // ===============================
-
-  function handleLogout() {
-
+  const handleUnauthorized = useCallback(() => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     localStorage.removeItem('currentPage')
@@ -118,454 +119,313 @@ const [showReports, setShowReports] = useState(() => {
     setUser(null)
     setExpenses([])
     setShowProfile(false)
+    setShowReports(false)
+  }, [])
 
-  }
+  const authFetch = useCallback(
+    async (url, options = {}) => {
+      const token = getToken()
 
+      if (!token) {
+        handleUnauthorized()
+        return null
+      }
+
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+          ...(options.headers || {}),
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (response.status === 401 || response.status === 403) {
+        handleUnauthorized()
+        return null
+      }
+
+      return response
+    },
+    [getToken, handleUnauthorized]
+  )
+
+
+  // ===============================
+  // LOGOUT
+  // ===============================
+
+  const handleLogout = handleUnauthorized
 
   // ===============================
   // GET EXPENSES
   // ===============================
 
   useEffect(() => {
+    let cancelled = false
 
     async function fetchExpenses() {
-
       if (!user) {
         setLoading(false)
         return
       }
 
       try {
-
         setLoading(true)
         setError('')
 
-        const token = getToken()
+        const response = await authFetch(API_URL)
 
-        if (!token) {
-          handleLogout()
-          return
-        }
-
-        const response = await fetch(
-          API_URL,
-          {
-            method: 'GET',
-
-            headers: {
-              Authorization:
-                `Bearer ${token}`
-            }
-          }
-        )
-
-        if (
-          response.status === 401 ||
-          response.status === 403
-        ) {
-          handleLogout()
-          return
-        }
+        if (!response) return
 
         if (!response.ok) {
-          throw new Error(
-            'Failed to fetch expenses'
-          )
+          throw new Error('Failed to fetch expenses')
         }
 
-        const data =
-          await response.json()
+        const data = await response.json()
 
-        setExpenses(data)
-
+        if (!cancelled) {
+          setExpenses(Array.isArray(data) ? data : [])
+        }
       } catch (error) {
-
-        console.error(error)
-
-        setError(
-          'Unable to connect to backend server'
-        )
-
+        if (!cancelled) {
+          console.error(error)
+          setError('Unable to connect to backend server')
+        }
       } finally {
-
-        setLoading(false)
-
+        if (!cancelled) {
+          setLoading(false)
+        }
       }
     }
 
     fetchExpenses()
 
-  }, [user])
+    return () => {
+      cancelled = true
+    }
+  }, [user, authFetch])
 
 
   // ===============================
   // ADD EXPENSE
   // ===============================
 
-  async function addExpense(
-    title,
-    amount,
-    type,
-    category
-  ) {
+  const addExpense = useCallback(
+    async (title, amount, type, category) => {
+      try {
+        const newExpense = {
+          title: title.trim(),
+          amount: Number(amount),
+          type,
+          category,
+          date: new Date().toISOString().split('T')[0],
+        }
 
-    try {
+        const response = await authFetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify(newExpense),
+        })
 
-      const token = getToken()
+        if (!response) return
 
-      if (!token) {
-        handleLogout()
-        return
-      }
+        if (!response.ok) {
+          throw new Error('Failed to add expense')
+        }
 
-      const newExpense = {
+        const savedExpense = await response.json()
 
-        title: title.trim(),
-
-        amount: Number(amount),
-
-        type,
-
-        category,
-
-        date:
-          new Date()
-            .toISOString()
-            .split('T')[0]
-
-      }
-
-      const response =
-        await fetch(
-          API_URL,
-          {
-            method: 'POST',
-
-            headers: {
-              'Content-Type':
-                'application/json',
-
-              Authorization:
-                `Bearer ${token}`
-            },
-
-            body:
-              JSON.stringify(newExpense)
-          }
-        )
-
-      if (
-        response.status === 401 ||
-        response.status === 403
-      ) {
-
-        handleLogout()
-        return
-
-      }
-
-      if (!response.ok) {
-
-        throw new Error(
-          'Failed to add expense'
-        )
-
-      }
-
-      const savedExpense =
-        await response.json()
-
-      setExpenses(
-        prevExpenses => [
+        setExpenses(prevExpenses => [
           savedExpense,
-          ...prevExpenses
-        ]
-      )
-
-    } catch (error) {
-
-      console.error(error)
-
-      alert(
-        'Unable to save transaction'
-      )
-
-    }
-
-  }
+          ...prevExpenses,
+        ])
+      } catch (error) {
+        console.error(error)
+        alert('Unable to save transaction')
+      }
+    },
+    [authFetch]
+  )
 
 
   // ===============================
   // DELETE EXPENSE
   // ===============================
 
-  async function deleteExpense(id) {
+  const deleteExpense = useCallback(
+    async (id) => {
+      try {
+        const response = await authFetch(`${API_URL}/${id}`, {
+          method: 'DELETE',
+        })
 
-    try {
+        if (!response) return
 
-      const token = getToken()
+        if (!response.ok) {
+          throw new Error('Failed to delete expense')
+        }
 
-      if (!token) {
-        handleLogout()
-        return
-      }
-
-      const response =
-        await fetch(
-          `${API_URL}/${id}`,
-          {
-            method: 'DELETE',
-
-            headers: {
-              Authorization:
-                `Bearer ${token}`
-            }
-          }
+        setExpenses(prevExpenses =>
+          prevExpenses.filter(expense => expense.id !== id)
         )
-
-      if (
-        response.status === 401 ||
-        response.status === 403
-      ) {
-
-        handleLogout()
-        return
-
+      } catch (error) {
+        console.error(error)
+        alert('Unable to delete transaction')
       }
-
-      if (!response.ok) {
-
-        throw new Error(
-          'Failed to delete expense'
-        )
-
-      }
-
-      setExpenses(
-        prevExpenses =>
-          prevExpenses.filter(
-            expense =>
-              expense.id !== id
-          )
-      )
-
-    } catch (error) {
-
-      console.error(error)
-
-      alert(
-        'Unable to delete transaction'
-      )
-
-    }
-
-  }
+    },
+    [authFetch]
+  )
 
 
   // ===============================
   // OPEN EDIT MODAL
   // ===============================
 
-  function editExpense(id) {
+  const editExpense = useCallback(
+    id => {
+      const expense = expenses.find(expense => expense.id === id)
 
-    const expense =
-      expenses.find(
-        expense =>
-          expense.id === id
-      )
-
-    if (!expense) {
-      return
-    }
-
-    setEditingExpense(expense)
-
-  }
+      if (expense) {
+        setEditingExpense(expense)
+      }
+    },
+    [expenses]
+  )
 
 
   // ===============================
   // UPDATE EXPENSE
   // ===============================
-async function updateExpense(updatedExpense) {
-  try {
-    const token = getToken()
-
-    if (!token) {
-      handleLogout()
-      return
-    }
-
-    const response = await fetch(
-      `${API_URL}/${updatedExpense.id}`,
-      {
+const updateExpense = useCallback(
+  async updatedExpense => {
+    try {
+      const response = await authFetch(`${API_URL}/${updatedExpense.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
         body: JSON.stringify({
           title: updatedExpense.title,
           amount: Number(updatedExpense.amount),
           type: updatedExpense.type,
           category: updatedExpense.category,
-          date: updatedExpense.date
-        })
-      }
-    )
+          date: updatedExpense.date,
+        }),
+      })
 
-    // 🔴 Backend error ko properly dekho
-    if (!response.ok) {
-      const errorText = await response.text()
+      if (!response) return
 
-      console.error(
-        'UPDATE FAILED:',
-        response.status,
-        errorText
-      )
+      if (!response.ok) {
+        const errorText = await response.text()
 
-      alert(
-        `Unable to update transaction (${response.status})`
-      )
-
-      return
-    }
-
-    // Backend response JSON ho ya na ho,
-    // local state ko updated data se update karo
-    let savedExpense = updatedExpense
-
-    const responseText = await response.text()
-
-    if (responseText) {
-      try {
-        savedExpense = JSON.parse(responseText)
-      } catch {
-        console.warn(
-          'Backend returned non-JSON response'
+        console.error(
+          'UPDATE FAILED:',
+          response.status,
+          errorText
         )
+
+        alert(`Unable to update transaction (${response.status})`)
+        return
       }
-    }
 
-    setExpenses(prevExpenses =>
-      prevExpenses.map(expense =>
-        expense.id === updatedExpense.id
-          ? {
-              ...expense,
-              ...savedExpense,
-              id: updatedExpense.id
-            }
-          : expense
+      let savedExpense = updatedExpense
+      const responseText = await response.text()
+
+      if (responseText) {
+        try {
+          savedExpense = JSON.parse(responseText)
+        } catch {
+          console.warn('Backend returned non-JSON response')
+        }
+      }
+
+      setExpenses(prevExpenses =>
+        prevExpenses.map(expense =>
+          expense.id === updatedExpense.id
+            ? {
+                ...expense,
+                ...savedExpense,
+                id: updatedExpense.id,
+              }
+            : expense
+        )
       )
-    )
 
-    setEditingExpense(null)
-
-  } catch (error) {
-    console.error(
-      'UPDATE ERROR:',
-      error
-    )
-
-    alert('Unable to update transaction')
-  }
-}
+      setEditingExpense(null)
+    } catch (error) {
+      console.error('UPDATE ERROR:', error)
+      alert('Unable to update transaction')
+    }
+  },
+  [authFetch]
+)
 
   // ===============================
   // CLOSE EDIT MODAL
   // ===============================
 
-  function closeEditModal() {
+  const closeEditModal = useCallback(() => {
     setEditingExpense(null)
-  }
+  }, [])
 
 
   // ===============================
   // INCOME
   // ===============================
 
-  const income =
-    expenses
-      .filter(
-        expense =>
-          expense.type === 'income'
-      )
-      .reduce(
-        (total, expense) =>
-          total +
-          Number(expense.amount),
-        0
-      )
+  const { income, expense, balance } = useMemo(() => {
+    let totalIncome = 0
+    let totalExpense = 0
 
+    for (const item of expenses) {
+      const amount = Number(item.amount) || 0
 
-  // ===============================
-  // EXPENSE
-  // ===============================
+      if (item.type === 'income') {
+        totalIncome += amount
+      } else if (item.type === 'expense') {
+        totalExpense += amount
+      }
+    }
 
-  const expense =
-    expenses
-      .filter(
-        expense =>
-          expense.type === 'expense'
-      )
-      .reduce(
-        (total, expense) =>
-          total +
-          Number(expense.amount),
-        0
-      )
-
-
-  // ===============================
-  // BALANCE
-  // ===============================
-
-  const balance =
-    income - expense
+    return {
+      income: totalIncome,
+      expense: totalExpense,
+      balance: totalIncome - totalExpense,
+    }
+  }, [expenses])
 
 
   // ===============================
   // FILTERS
   // ===============================
 
-  const filteredExpenses =
-    expenses.filter((expense) => {
+  const filteredExpenses = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase()
 
+    return expenses.filter(item => {
       const matchesSearch =
-        expense.title
-          ?.toLowerCase()
-          .includes(
-            search.toLowerCase()
-          )
+        !normalizedSearch ||
+        item.title?.toLowerCase().includes(normalizedSearch)
 
       const matchesCategory =
         categoryFilter === 'all' ||
-        expense.category ===
-          categoryFilter
+        item.category === categoryFilter
 
       const matchesDate =
         !dateFilter ||
-        expense.date === dateFilter
+        item.date === dateFilter
 
-      return (
-        matchesSearch &&
-        matchesCategory &&
-        matchesDate
-      )
-
+      return matchesSearch && matchesCategory && matchesDate
     })
+  }, [expenses, search, categoryFilter, dateFilter])
 
 
   // ===============================
   // CLEAR FILTERS
   // ===============================
 
-  function clearFilters() {
-
+  const clearFilters = useCallback(() => {
     setSearch('')
     setCategoryFilter('all')
     setDateFilter('')
-
-  }
+  }, [])
 
 
   // ===============================
