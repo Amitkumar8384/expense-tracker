@@ -188,6 +188,172 @@ header p {
 }
 
 /* =========================================================
+   DASHBOARD ANALYTICS
+   ========================================================= */
+
+.dashboard {
+  padding: 24px !important;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.dashboard-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-icon,
+.stat-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  color: var(--primary-light);
+  background: rgba(99, 102, 241, 0.14);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.dashboard-title h2 {
+  font-size: 1.45rem;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.dashboard-title p,
+.analytics-card-header p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.dashboard-period {
+  width: min(190px, 100%);
+  height: 42px;
+  padding: 0 12px;
+  color: var(--text-soft);
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+  margin-bottom: 16px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.68);
+}
+
+.stat-card .stat-content {
+  min-width: 0;
+}
+
+.stat-content p {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.stat-content h3 {
+  margin-top: 5px;
+  overflow: hidden;
+  color: var(--text);
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.income-card .stat-icon {
+  color: var(--income-light);
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(52, 211, 153, 0.2);
+}
+
+.income-card h3 {
+  color: var(--income-light);
+}
+
+.expense-card .stat-icon {
+  color: var(--expense-light);
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(251, 113, 133, 0.2);
+}
+
+.expense-card h3 {
+  color: var(--expense-light);
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.analytics-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.58);
+}
+
+.analytics-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 42px;
+  margin-bottom: 8px;
+}
+
+.analytics-card-header h3 {
+  font-size: 0.98rem;
+  font-weight: 750;
+}
+
+.analytics-chart {
+  width: 100%;
+  height: 300px;
+  min-height: 260px;
+}
+
+.trend-card {
+  margin-top: 16px;
+}
+
+.analytics-empty {
+  display: grid;
+  place-items: center;
+  height: 300px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.analytics-empty span {
+  margin-bottom: 8px;
+  font-size: 1.8rem;
+}
+
+/* =========================================================
    SUMMARY
    ========================================================= */
 
@@ -1221,6 +1387,14 @@ form button:hover {
 }
 
 @media (max-width: 850px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
   .filter-controls {
     grid-template-columns: 1fr 1fr;
   }
@@ -1265,6 +1439,23 @@ form button:hover {
 
   .summary-cards {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard {
+    padding: 18px !important;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 13px;
+  }
+
+  .dashboard-period {
+    width: 100%;
+  }
+
+  .analytics-card {
+    padding: 14px;
   }
 
   .balance h3 {
