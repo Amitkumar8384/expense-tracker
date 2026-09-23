@@ -7,8 +7,7 @@ const PASSWORD_API_URL = apiUrl('/api/auth/change-password')
 
 function Profile({
   user,
-  onLogout,
-  onBack
+  onLogout
 }) {
 
   const [profile, setProfile] =
@@ -424,14 +423,6 @@ function Profile({
             {error}
           </p>
 
-          <button
-            type="button"
-            className="profile-back-btn"
-            onClick={onBack}
-          >
-            ← Back to Home
-          </button>
-
         </div>
 
       </section>
@@ -449,15 +440,6 @@ function Profile({
       ====================================== */}
 
       <div className="profile-topbar">
-
-        <button
-          type="button"
-          className="profile-back-btn"
-          onClick={onBack}
-        >
-          ← Home
-        </button>
-
         <span className="profile-page-label">
           Account Settings
         </span>
@@ -638,7 +620,7 @@ function Profile({
           <div className="profile-side-icon">
             🔐
           </div>
-              ← Home
+
           <span className="profile-eyebrow">
             SECURITY
           </span>
@@ -665,7 +647,6 @@ function Profile({
             <strong>
               Secure
             </strong>
-                    ← Back to Home
           </div>
 
           <div className="profile-security-row">

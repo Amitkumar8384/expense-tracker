@@ -15,7 +15,7 @@ import { jsPDF } from 'jspdf'
 import { autoTable } from 'jspdf-autotable'
 
 
-function Reports({ expenses = [], onBack }) {
+function Reports({ expenses = [] }) {
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const now = new Date()
 
@@ -429,14 +429,6 @@ function Reports({ expenses = [], onBack }) {
 
       {/* HEADER */}
       <div className="reports-header">
-          <button
-            type="button"
-            className="reports-back-btn"
-            onClick={onBack}
-          >
-            ← Home
-          </button>
-
         <div>
           <span className="reports-eyebrow">
             FINANCIAL REPORT
