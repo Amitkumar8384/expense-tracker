@@ -9,7 +9,6 @@ import {
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import Header from './components/Header'
-import Summary from './components/Summary'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
 import { apiUrl, getLocalDateString } from './lib/api'
@@ -29,18 +28,17 @@ function App() {
   const [user, setUser] = useState(null)
   const [sessionChecking, setSessionChecking] = useState(true)
 
-
   // ===============================
   // PROFILE PAGE
   // ===============================
 
- const [showProfile, setShowProfile] = useState(() => {
-  return localStorage.getItem('currentPage') === 'profile'
-})
+  const [showProfile, setShowProfile] = useState(() => {
+    return localStorage.getItem('currentPage') === 'profile'
+  })
 
-const [showReports, setShowReports] = useState(() => {
-  return localStorage.getItem('currentPage') === 'reports'
-})
+  const [showReports, setShowReports] = useState(() => {
+    return localStorage.getItem('currentPage') === 'reports'
+  })
 
   // ===============================
   // THEME
@@ -386,32 +384,6 @@ const updateExpense = useCallback(
 
 
   // ===============================
-  // INCOME
-  // ===============================
-
-  const { income, expense, balance } = useMemo(() => {
-    let totalIncome = 0
-    let totalExpense = 0
-
-    for (const item of expenses) {
-      const amount = Number(item.amount) || 0
-
-      if (item.type === 'income') {
-        totalIncome += amount
-      } else if (item.type === 'expense') {
-        totalExpense += amount
-      }
-    }
-
-    return {
-      income: totalIncome,
-      expense: totalExpense,
-      balance: totalIncome - totalExpense,
-    }
-  }, [expenses])
-
-
-  // ===============================
   // FILTERS
   // ===============================
 
@@ -621,19 +593,6 @@ const updateExpense = useCallback(
     <Dashboard
       expenses={expenses}
     />
-
-   
-
-          {/* ===============================
-              SUMMARY
-          =============================== */}
-
-          <Summary
-            balance={balance}
-            income={income}
-            expense={expense}
-          />
-
 
           {/* ===============================
               ADD FORM
