@@ -154,6 +154,7 @@ header p {
   display: flex;
   align-items: center;
   gap: 8px;
+  order: -1;
 }
 
 .profile-btn,
