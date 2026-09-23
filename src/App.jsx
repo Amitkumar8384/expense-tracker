@@ -314,6 +314,10 @@ const [showReports, setShowReports] = useState(() => {
 const updateExpense = useCallback(
   async updatedExpense => {
     try {
+      const expenseDate = updatedExpense.date
+        ? String(updatedExpense.date).slice(0, 10)
+        : getLocalDateString()
+
       const response = await authFetch(`${EXPENSES_API_URL}/${updatedExpense.id}`, {
         method: 'PUT',
         body: JSON.stringify({
@@ -321,7 +325,7 @@ const updateExpense = useCallback(
           amount: Number(updatedExpense.amount),
           type: updatedExpense.type,
           category: updatedExpense.category,
-          date: updatedExpense.date,
+          date: expenseDate,
         }),
       })
 
