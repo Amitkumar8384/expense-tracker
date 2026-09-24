@@ -6,11 +6,27 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const path = require('path')
+const rateLimit = require('express-rate-limit')
+
 
 dotenv.config()
 
 const app = express()
 app.set('trust proxy', 1)
+
+
+// 🔐 Rate Limiting
+
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: {
+    message: 'Too many authentication attempts. Please try again later.'
+  }
+})
 
 const PORT = process.env.PORT || 5000
 const isProduction = process.env.NODE_ENV === 'production'
@@ -258,7 +274,7 @@ function authenticateToken(
 // ===============================
 
 app.post(
-  '/api/auth/signup',
+  '/api/auth/signup', authLimiter, 
   async (req, res) => {
 
     try {
@@ -387,6 +403,7 @@ app.post(
 
 app.post(
   '/api/auth/login',
+   authLimiter,
   async (req, res) => {
 
     try {
@@ -852,6 +869,7 @@ app.post(
 
 app.put(
   '/api/expenses/:id',
+  
   authenticateToken,
   async (req, res) => {
 
@@ -1054,7 +1072,7 @@ app.delete(
 // ===============================
 
 app.put(
-  '/api/auth/change-password',
+  '/api/auth/change-password', authLimiter, 
   authenticateToken,
   async (req, res) => {
 
