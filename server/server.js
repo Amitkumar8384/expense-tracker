@@ -189,7 +189,9 @@ async function ensurePlanningTables() {
         monthly_limit DECIMAL(12, 2) NOT NULL,
         month CHAR(7) NOT NULL,
         created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE KEY uq_budget_user_category_month (user_id, category, month)
+        UNIQUE KEY uq_budget_user_category_month (user_id, category, month),
+        CONSTRAINT chk_budget_limit CHECK (monthly_limit > 0),
+        CONSTRAINT fk_budget_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
     `)
 
@@ -203,7 +205,11 @@ async function ensurePlanningTables() {
         category VARCHAR(100) NOT NULL,
         day_of_month TINYINT NOT NULL,
         is_active BOOLEAN NOT NULL DEFAULT TRUE,
-        created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT chk_recurring_amount CHECK (amount > 0),
+        CONSTRAINT chk_recurring_type CHECK (type IN ('income', 'expense')),
+        CONSTRAINT chk_recurring_day CHECK (day_of_month BETWEEN 1 AND 31),
+        CONSTRAINT fk_recurring_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
     `)
 

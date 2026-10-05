@@ -604,6 +604,7 @@ const updateExpense = useCallback(
       <NotificationCenter
         authFetch={authFetch}
         expenses={expenses}
+        userId={user.id}
       />
 
 {/* ===============================

@@ -23,6 +23,14 @@ import {
   FaReceipt,
 } from './Icons'
 
+function escapeCsvCell(value) {
+  const text = String(value)
+  const safeText = /^\s*[=+\-@]/.test(text)
+    ? `'${text}`
+    : text
+
+  return `"${safeText.replace(/"/g, '""')}"`
+}
 
 function Reports({ expenses = [] }) {
   const theme = document.documentElement.getAttribute('data-theme') || 'dark'
@@ -103,11 +111,7 @@ function Reports({ expenses = [] }) {
       ...rows
     ]
       .map((row) =>
-        row
-          .map((value) =>
-            `"${String(value).replace(/"/g, '""')}"`
-          )
-          .join(',')
+        row.map(escapeCsvCell).join(',')
       )
       .join('\n')
 

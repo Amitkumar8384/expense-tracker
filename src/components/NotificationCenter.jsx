@@ -2,13 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { FaBell, FaCalendarDays, FaCircleExclamation, FaRegClock, FaXmark } from './Icons'
 import { apiUrl, getLocalDateString } from '../lib/api'
 
-function NotificationCenter({ authFetch, expenses }) {
+function NotificationCenter({ authFetch, expenses, userId }) {
+  const dismissalKey = `dismissedNotifications:${userId}`
   const [budgets, setBudgets] = useState([])
   const [recurring, setRecurring] = useState([])
   const [open, setOpen] = useState(false)
   const [dismissed, setDismissed] = useState(() => {
     try {
-      return new Set(JSON.parse(localStorage.getItem('dismissedNotifications') || '[]'))
+      return new Set(JSON.parse(localStorage.getItem(dismissalKey) || '[]'))
     } catch {
       return new Set()
     }
@@ -45,16 +46,31 @@ function NotificationCenter({ authFetch, expenses }) {
         tone: 'warning',
       }))
 
-    const today = new Date().getDate()
-    recurring
-      .filter(item => item.is_active && Number(item.day_of_month) >= today && Number(item.day_of_month) <= today + 3)
-      .forEach(item => items.push({
-        id: `recurring-${item.id}`,
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const upcomingDates = Array.from({ length: 4 }, (_, offset) => {
+      const date = new Date(today)
+      date.setDate(date.getDate() + offset)
+      return date
+    })
+
+    recurring.forEach(item => {
+      if (!item.is_active) return
+
+      const dueDate = upcomingDates.find(
+        date => date.getDate() === Number(item.day_of_month)
+      )
+
+      if (!dueDate) return
+
+      items.push({
+        id: `recurring-${item.id}-${getLocalDateString(dueDate)}`,
         icon: <FaRegClock aria-hidden="true" />,
         title: `${item.title} is coming up`,
         detail: `Scheduled for day ${item.day_of_month}`,
         tone: 'info',
-      }))
+      })
+    })
 
     return items.filter(item => !dismissed.has(item.id))
   }, [budgets, recurring, dismissed])
@@ -63,7 +79,7 @@ function NotificationCenter({ authFetch, expenses }) {
     setDismissed(previous => {
       const next = new Set(previous)
       next.add(id)
-      localStorage.setItem('dismissedNotifications', JSON.stringify([...next]))
+      localStorage.setItem(dismissalKey, JSON.stringify([...next]))
       return next
     })
   }
@@ -72,7 +88,7 @@ function NotificationCenter({ authFetch, expenses }) {
     const ids = notifications.map(item => item.id)
     setDismissed(previous => {
       const next = new Set([...previous, ...ids])
-      localStorage.setItem('dismissedNotifications', JSON.stringify([...next]))
+      localStorage.setItem(dismissalKey, JSON.stringify([...next]))
       return next
     })
   }
