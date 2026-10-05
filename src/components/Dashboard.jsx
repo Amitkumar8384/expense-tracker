@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
   ResponsiveContainer,
@@ -95,6 +95,23 @@ function MoneyTooltip({
 
 
 function Dashboard({ expenses = [] }) {
+
+  const [isCompactChart, setIsCompactChart] = useState(
+    () => typeof window !== 'undefined' ? window.innerWidth <= 400 : false
+  )
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined
+
+    const handleResize = () => {
+      setIsCompactChart(window.innerWidth <= 400)
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // ==========================================
   // PERIOD
@@ -444,6 +461,14 @@ function Dashboard({ expenses = [] }) {
   // INCOME / EXPENSE CHART
   // ==========================================
 
+  const chartConfig = useMemo(() => ({
+    height: isCompactChart ? 240 : 300,
+    fontSize: isCompactChart ? 10 : 12,
+    pieOuterRadius: isCompactChart ? 72 : 105,
+    pieInnerRadius: isCompactChart ? 38 : 55,
+    lineSpacing: isCompactChart ? 12 : 20,
+  }), [isCompactChart])
+
   const comparisonData = useMemo(() => {
     return [
       {
@@ -646,7 +671,7 @@ function Dashboard({ expenses = [] }) {
 
             <ResponsiveContainer
               width="100%"
-              height={300}
+              height={chartConfig.height}
             >
 
               <BarChart
@@ -654,7 +679,7 @@ function Dashboard({ expenses = [] }) {
                 margin={{
                   top: 20,
                   right: 10,
-                  left: 0,
+                  left: isCompactChart ? -10 : 0,
                   bottom: 5
                 }}
               >
@@ -667,13 +692,13 @@ function Dashboard({ expenses = [] }) {
                 <XAxis
                   dataKey="name"
                   tick={{
-                    fontSize: 12
+                    fontSize: chartConfig.fontSize
                   }}
                 />
 
                 <YAxis
                   tick={{
-                    fontSize: 11
+                    fontSize: chartConfig.fontSize - 1
                   }}
                   tickFormatter={(value) =>
                     `₹${value.toLocaleString(
@@ -738,7 +763,7 @@ function Dashboard({ expenses = [] }) {
 
               <ResponsiveContainer
                 width="100%"
-                height={300}
+                height={chartConfig.height}
               >
 
                 <PieChart>
@@ -749,8 +774,8 @@ function Dashboard({ expenses = [] }) {
                     nameKey="category"
                     cx="50%"
                     cy="50%"
-                    outerRadius={105}
-                    innerRadius={55}
+                    outerRadius={chartConfig.pieOuterRadius}
+                    innerRadius={chartConfig.pieInnerRadius}
                     paddingAngle={3}
                   >
 
@@ -780,7 +805,13 @@ function Dashboard({ expenses = [] }) {
                     }
                   />
 
-                  <Legend />
+                  <Legend
+                    wrapperStyle={
+                      isCompactChart
+                        ? { fontSize: '10px' }
+                        : { fontSize: '12px' }
+                    }
+                  />
 
                 </PieChart>
 
@@ -843,15 +874,15 @@ function Dashboard({ expenses = [] }) {
 
             <ResponsiveContainer
               width="100%"
-              height={320}
+              height={chartConfig.height + 20}
             >
 
               <LineChart
                 data={trendData}
                 margin={{
                   top: 10,
-                  right: 20,
-                  left: 0,
+                  right: 10,
+                  left: isCompactChart ? -10 : 0,
                   bottom: 5
                 }}
               >
@@ -869,13 +900,14 @@ function Dashboard({ expenses = [] }) {
                       : 'label'
                   }
                   tick={{
-                    fontSize: 11
+                    fontSize: chartConfig.fontSize
                   }}
+                  interval={isCompactChart ? 1 : 0}
                 />
 
                 <YAxis
                   tick={{
-                    fontSize: 11
+                    fontSize: chartConfig.fontSize - 1
                   }}
                   tickFormatter={(value) =>
                     `₹${value.toLocaleString(
