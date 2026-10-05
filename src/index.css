@@ -4159,35 +4159,35 @@ html[data-theme="light"] .auth-card .password-toggle {
 }
 
 .notification-center {
-  position: relative;
-  z-index: 1;
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 55;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .notification-trigger {
   position: relative;
   display: inline-grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   padding: 0;
-  color: #334155;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
-  transition: background 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  color: #1f2937;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 50%;
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.18);
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
 .notification-trigger:hover,
 .notification-trigger.is-active {
-  color: #1d4ed8;
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(99, 102, 241, 0.3);
-  transform: translateY(-1px);
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.22);
 }
 
 .notification-badge {
@@ -4210,7 +4210,7 @@ html[data-theme="light"] .auth-card .password-toggle {
 .notification-popover {
   position: absolute;
   right: 0;
-  top: calc(100% + 12px);
+  bottom: calc(100% + 12px);
   width: min(330px, calc(100vw - 28px));
   padding: 13px;
   color: var(--text);
@@ -4294,6 +4294,30 @@ html[data-theme="light"] .auth-card .password-toggle {
 
 .notification-empty svg { color: var(--income-light); font-size: 1.2rem; }
 
+html[data-theme="dark"] .notification-trigger {
+  background: rgba(15, 23, 42, 0.96);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: #f8fafc;
+  box-shadow: 0 16px 32px rgba(2, 6, 23, 0.28);
+}
+
+html[data-theme="dark"] .notification-trigger:hover,
+html[data-theme="dark"] .notification-trigger.is-active {
+  background: rgba(17, 24, 39, 0.98);
+  border-color: rgba(99, 102, 241, 0.42);
+}
+
+html[data-theme="dark"] .notification-popover {
+  background: rgba(15, 23, 42, 0.96);
+  border-color: rgba(148, 163, 184, 0.18);
+  color: #f8fafc;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.32);
+}
+
+html[data-theme="dark"] .notification-item strong {
+  color: #f8fafc;
+}
+
 html[data-theme="light"] .notification-popover {
   background: #ffffff;
   box-shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
@@ -4301,8 +4325,12 @@ html[data-theme="light"] .notification-popover {
 
 @media (max-width: 600px) {
   .notification-center {
-    flex: 0 0 36px;
     right: 16px;
     bottom: 16px;
+  }
+
+  .notification-trigger {
+    width: 52px;
+    height: 52px;
   }
 }

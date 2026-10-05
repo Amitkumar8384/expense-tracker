@@ -589,11 +589,6 @@ const updateExpense = useCallback(
             <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
           </button>
 
-          <NotificationCenter
-            authFetch={authFetch}
-            expenses={expenses}
-          />
-
           <button
             type="button"
             className="logout-btn"
@@ -605,6 +600,11 @@ const updateExpense = useCallback(
         </div>
 
       </div>
+
+      <NotificationCenter
+        authFetch={authFetch}
+        expenses={expenses}
+      />
 
 {/* ===============================
     PROFILE
