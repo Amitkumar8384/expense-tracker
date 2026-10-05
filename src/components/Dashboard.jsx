@@ -36,6 +36,28 @@ const PIE_COLORS = [
   '#64748b'
 ]
 
+function getChartPalette() {
+  const theme = document.documentElement.getAttribute('data-theme') || 'dark'
+
+  return theme === 'light'
+    ? {
+        grid: '#cbd5e1',
+        text: '#475569',
+        primary: '#4f46e5',
+        income: '#059669',
+        expense: '#e11d48',
+        pie: PIE_COLORS,
+      }
+    : {
+        grid: '#334155',
+        text: '#cbd5e1',
+        primary: '#6366f1',
+        income: '#10b981',
+        expense: '#ef4444',
+        pie: PIE_COLORS,
+      }
+}
+
 function formatMoney(amount) {
   return `₹${Number(amount || 0).toLocaleString('en-IN')}`
 }
@@ -95,6 +117,7 @@ function MoneyTooltip({
 
 
 function Dashboard({ expenses = [] }) {
+  const chartPalette = getChartPalette()
 
   const [isCompactChart, setIsCompactChart] = useState(
     () => typeof window !== 'undefined' ? window.innerWidth <= 400 : false
@@ -685,6 +708,7 @@ function Dashboard({ expenses = [] }) {
               >
 
                 <CartesianGrid
+                  stroke={chartPalette.grid}
                   strokeDasharray="3 3"
                   vertical={false}
                 />
@@ -692,19 +716,25 @@ function Dashboard({ expenses = [] }) {
                 <XAxis
                   dataKey="name"
                   tick={{
-                    fontSize: chartConfig.fontSize
+                    fontSize: chartConfig.fontSize,
+                    fill: chartPalette.text,
                   }}
+                  axisLine={{ stroke: chartPalette.grid }}
+                  tickLine={{ stroke: chartPalette.grid }}
                 />
 
                 <YAxis
                   tick={{
-                    fontSize: chartConfig.fontSize - 1
+                    fontSize: chartConfig.fontSize - 1,
+                    fill: chartPalette.text,
                   }}
                   tickFormatter={(value) =>
                     `₹${value.toLocaleString(
                       'en-IN'
                     )}`
                   }
+                  axisLine={{ stroke: chartPalette.grid }}
+                  tickLine={{ stroke: chartPalette.grid }}
                 />
 
                 <Tooltip
@@ -722,7 +752,7 @@ function Dashboard({ expenses = [] }) {
                     0,
                     0
                   ]}
-                  fill="#6366f1"
+                  fill={chartPalette.primary}
                 />
 
               </BarChart>
@@ -787,9 +817,9 @@ function Dashboard({ expenses = [] }) {
                             entry.category
                           }
                           fill={
-                            PIE_COLORS[
+                            chartPalette.pie[
                               index %
-                              PIE_COLORS.length
+                              chartPalette.pie.length
                             ]
                           }
                         />
@@ -888,6 +918,7 @@ function Dashboard({ expenses = [] }) {
               >
 
                 <CartesianGrid
+                  stroke={chartPalette.grid}
                   strokeDasharray="3 3"
                   vertical={false}
                 />
@@ -900,20 +931,26 @@ function Dashboard({ expenses = [] }) {
                       : 'label'
                   }
                   tick={{
-                    fontSize: chartConfig.fontSize
+                    fontSize: chartConfig.fontSize,
+                    fill: chartPalette.text,
                   }}
                   interval={isCompactChart ? 1 : 0}
+                  axisLine={{ stroke: chartPalette.grid }}
+                  tickLine={{ stroke: chartPalette.grid }}
                 />
 
                 <YAxis
                   tick={{
-                    fontSize: chartConfig.fontSize - 1
+                    fontSize: chartConfig.fontSize - 1,
+                    fill: chartPalette.text,
                   }}
                   tickFormatter={(value) =>
                     `₹${value.toLocaleString(
                       'en-IN'
                     )}`
                   }
+                  axisLine={{ stroke: chartPalette.grid }}
+                  tickLine={{ stroke: chartPalette.grid }}
                 />
 
                 <Tooltip
@@ -928,7 +965,7 @@ function Dashboard({ expenses = [] }) {
                   type="monotone"
                   dataKey="income"
                   name="Income"
-                  stroke="#10b981"
+                  stroke={chartPalette.income}
                   strokeWidth={3}
                   dot={{
                     r: 3
@@ -942,7 +979,7 @@ function Dashboard({ expenses = [] }) {
                   type="monotone"
                   dataKey="expense"
                   name="Expense"
-                  stroke="#ef4444"
+                  stroke={chartPalette.expense}
                   strokeWidth={3}
                   dot={{
                     r: 3

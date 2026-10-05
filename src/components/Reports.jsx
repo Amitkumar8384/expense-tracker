@@ -25,6 +25,21 @@ import {
 
 
 function Reports({ expenses = [] }) {
+  const theme = document.documentElement.getAttribute('data-theme') || 'dark'
+  const chartPalette = theme === 'light'
+    ? {
+        grid: '#cbd5e1',
+        text: '#475569',
+        income: '#059669',
+        expense: '#e11d48',
+      }
+    : {
+        grid: '#334155',
+        text: '#cbd5e1',
+        income: '#10b981',
+        expense: '#f43f5e',
+      }
+
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const now = new Date()
 
@@ -580,15 +595,23 @@ function Reports({ expenses = [] }) {
       >
 
         <CartesianGrid
+          stroke={chartPalette.grid}
           strokeDasharray="3 3"
           vertical={false}
         />
 
         <XAxis
           dataKey="name"
+          tick={{ fill: chartPalette.text }}
+          axisLine={{ stroke: chartPalette.grid }}
+          tickLine={{ stroke: chartPalette.grid }}
         />
 
-        <YAxis />
+        <YAxis
+          tick={{ fill: chartPalette.text }}
+          axisLine={{ stroke: chartPalette.grid }}
+          tickLine={{ stroke: chartPalette.grid }}
+        />
 
         <Tooltip />
 
@@ -596,13 +619,13 @@ function Reports({ expenses = [] }) {
 
         <Bar
           dataKey="Income"
-          fill="#10b981"
+          fill={chartPalette.income}
           radius={[6, 6, 0, 0]}
         />
 
         <Bar
           dataKey="Expenses"
-          fill="#f43f5e"
+          fill={chartPalette.expense}
           radius={[6, 6, 0, 0]}
         />
 

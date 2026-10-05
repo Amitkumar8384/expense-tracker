@@ -552,11 +552,6 @@ const updateExpense = useCallback(
 
         <div className="user-actions">
 
-          <NotificationCenter
-            authFetch={authFetch}
-            expenses={expenses}
-          />
-
           <button
             type="button"
             className={`home-btn ${currentPage === 'dashboard' ? 'is-active' : ''}`}
@@ -593,6 +588,11 @@ const updateExpense = useCallback(
             {theme === 'dark' ? <FaSun aria-hidden="true" /> : <FaMoon aria-hidden="true" />}
             <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
           </button>
+
+          <NotificationCenter
+            authFetch={authFetch}
+            expenses={expenses}
+          />
 
           <button
             type="button"
