@@ -2017,7 +2017,7 @@ form button:hover {
 
   
 }
-/* 
+
 @media (max-width: 380px) {
   .app {
     width: calc(100% - 12px);
@@ -2039,7 +2039,7 @@ form button:hover {
     height: 230px;
     min-height: 230px;
   }
-} */
+}
 /* =========================================================
    PROFILE PAGE — PROFESSIONAL DARK UI
    ========================================================= */
@@ -2636,7 +2636,7 @@ form button:hover {
   }
 }
 
-/* @media (max-width: 380px) {
+@media (max-width: 380px) {
   .profile-hero {
     padding: 22px 17px;
   }
@@ -2652,7 +2652,7 @@ form button:hover {
     flex-direction: column;
     gap: 7px;
   }
-} */
+}
 /* =========================================================
    LOGIN / AUTH PAGE
    ========================================================= */
@@ -4165,177 +4165,5 @@ html[data-theme="light"] .notification-popover {
     flex: 0 0 36px;
     right: 16px;
     bottom: 16px;
-  }
-}
-
-
-/* =========================================================
-   EXTRA SMALL MOBILE — KEEP 400px STRUCTURE
-   ========================================================= */
-
-@media (max-width: 400px) {
-
-  .app {
-    width: calc(100% - 16px);
-    max-width: none;
-    margin: 0 auto;
-    padding: 16px 0 35px;
-  }
-
-  .app > section {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 16px !important;
-    overflow: hidden;
-  }
-
-  /* Dashboard header */
-  .dashboard-header {
-    width: 100%;
-  }
-
-  .dashboard-title {
-    min-width: 0;
-  }
-
-  .dashboard-title h2 {
-    font-size: 1.55rem;
-  }
-
-  .dashboard-title p {
-    font-size: 0.72rem;
-  }
-
-  /* Period dropdown */
-  .dashboard-period {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* Summary cards */
-  .summary-cards {
-    grid-template-columns: 1fr;
-    width: 100%;
-  }
-
-  .stat-card {
-    min-width: 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* Analytics */
-  .analytics-grid {
-    grid-template-columns: 1fr;
-    width: 100%;
-  }
-
-  .analytics-card {
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    overflow: hidden;
-    padding: 13px;
-  }
-
-  /* Chart must stay inside card */
-  .analytics-chart {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    height: 220px;
-    overflow: hidden;
-  }
-
-  /* Recharts responsive container */
-  .analytics-chart > div {
-    max-width: 100% !important;
-  }
-
-  /* Chart heading */
-  .analytics-card-header {
-    min-width: 0;
-  }
-
-  .analytics-card-header h3 {
-    font-size: 0.85rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .analytics-card-header p {
-    font-size: 0.68rem;
-  }
-
-  /* Legend */
-  .recharts-default-legend {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 3px 8px !important;
-    padding-left: 0 !important;
-    margin: 0 !important;
-  }
-
-  .recharts-legend-item {
-    margin-right: 0 !important;
-    font-size: 10px !important;
-  }
-
-  /* Category list */
-  .category-row {
-    min-width: 0;
-  }
-
-  .category-row strong,
-  .category-row span {
-    min-width: 0;
-  }
-
-  /* Prevent horizontal overflow */
-  .analytics-card *,
-  .stat-card *,
-  .dashboard * {
-    max-width: 100%;
-  }
-}
-
-
-/* 360px and below */
-@media (max-width: 360px) {
-
-  .app {
-    width: calc(100% - 12px);
-  }
-
-  .app > section {
-    padding: 14px !important;
-  }
-
-  .dashboard-title h2 {
-    font-size: 1.45rem;
-  }
-
-  .analytics-card {
-    padding: 11px;
-  }
-
-  .analytics-chart {
-    height: 210px;
-  }
-
-  .chart-bar {
-    width: 30px;
-  }
-
-  .bars {
-    gap: 18px;
-  }
-
-  .category-row {
-    padding-left: 4px;
-    padding-right: 4px;
   }
 }
