@@ -17,9 +17,7 @@ import NotificationCenter from './components/NotificationCenter'
 import {
   FaChartColumn,
   FaHouse,
-  FaMoon,
   FaRightFromBracket,
-  FaSun,
   FaUser,
 } from './components/Icons'
 import { apiUrl, getLocalDateString } from './lib/api'
@@ -528,7 +526,7 @@ const updateExpense = useCallback(
           HEADER
       =============================== */}
 
-      <Header />
+      <Header theme={theme} onToggleTheme={toggleTheme} />
 
 
       {/* ===============================
@@ -536,21 +534,17 @@ const updateExpense = useCallback(
       =============================== */}
 
       <div className="user-bar">
-
-        <div>
-
-          <strong>
-            Welcome, {user.name}
-          </strong>
-
-          <span>
-            {user.email}
-          </span>
-
+        <div className="user-identity">
+          <div className="user-avatar" aria-hidden="true">
+            {user.name?.trim().charAt(0).toUpperCase() || 'U'}
+          </div>
+          <div className="user-copy">
+            <strong>Welcome, {user.name}</strong>
+            <span>{user.email}</span>
+          </div>
         </div>
 
-
-        <div className="user-actions">
+        <nav className="user-actions" aria-label="Primary navigation">
 
           <button
             type="button"
@@ -580,24 +574,13 @@ const updateExpense = useCallback(
 </button>
           <button
             type="button"
-            className="theme-toggle-btn"
-            onClick={toggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-          >
-            {theme === 'dark' ? <FaSun aria-hidden="true" /> : <FaMoon aria-hidden="true" />}
-            <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
-          </button>
-
-          <button
-            type="button"
             className="logout-btn"
             onClick={handleLogout}
           >
             <FaRightFromBracket aria-hidden="true" /> Logout
           </button>
 
-        </div>
+        </nav>
 
       </div>
 

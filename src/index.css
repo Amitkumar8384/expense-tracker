@@ -148,32 +148,57 @@ header p {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 14px;
   margin-bottom: 18px;
-  padding: 16px 18px;
+  padding: 11px 14px;
   border: 1px solid rgba(148, 163, 184, 0.12);
-  border-radius: 20px;
+  border-radius: 16px;
   background:
     linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.74));
   backdrop-filter: blur(14px);
   box-shadow: 0 14px 28px rgba(2, 6, 23, 0.18);
 }
 
-.user-bar > div:first-child {
+.user-identity {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.user-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  color: #fff;
+  background: linear-gradient(145deg, #6366f1, #8b5cf6);
+  border: 1px solid rgba(199, 210, 254, 0.24);
+  border-radius: 50%;
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.2);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.user-copy {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   min-width: 0;
 }
 
 .user-bar strong {
-  font-size: 1.03rem;
-  letter-spacing: -0.02em;
+  overflow: hidden;
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .user-bar span {
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.66rem;
 }
 
 .user-actions {
@@ -181,11 +206,11 @@ header p {
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 10px;
-  padding: 6px;
-  border: 1px solid rgba(148, 163, 184, 0.08);
-  border-radius: 16px;
-  background: rgba(15, 23, 42, 0.32);
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .home-btn,
@@ -197,8 +222,8 @@ header p {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 40px;
-  padding: 0 14px;
+  min-height: 36px;
+  padding: 0 12px;
   border-radius: 12px;
   border: 1px solid transparent;
   font-size: 0.74rem;
