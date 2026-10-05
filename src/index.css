@@ -207,10 +207,10 @@ header p {
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 7px;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
+  padding: 4px;
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.4);
 }
 
 .home-btn,
