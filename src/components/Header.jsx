@@ -1,5 +1,3 @@
-import { FaMoon, FaSun } from './Icons'
-
 function Header({ theme, onToggleTheme }) {
   return (
     <header className="app-header">
@@ -15,9 +13,14 @@ function Header({ theme, onToggleTheme }) {
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         aria-pressed={theme === 'dark'}
       >
-        {theme === 'dark' ? <FaMoon aria-hidden="true" /> : <FaSun aria-hidden="true" />}
+        <span className={`theme-mode-label ${theme === 'light' ? 'is-active' : ''}`} aria-hidden="true">
+          LIGHT MODE
+        </span>
         <span className="theme-toggle-track" aria-hidden="true">
           <span className="theme-toggle-thumb" />
+        </span>
+        <span className={`theme-mode-label ${theme === 'dark' ? 'is-active' : ''}`} aria-hidden="true">
+          DARK MODE
         </span>
       </button>
     </header>
