@@ -3358,16 +3358,14 @@ html[data-theme="light"] {
 html[data-theme="light"] body {
   color: var(--text);
   background:
-    radial-gradient(circle at 8% 5%, rgba(99, 102, 241, 0.08), transparent 28%),
-    radial-gradient(circle at 92% 8%, rgba(168, 85, 247, 0.05), transparent 25%),
-    var(--bg);
+    linear-gradient(180deg, #edf1f7 0%, #eef3f8 100%);
 }
 
-  html[data-theme="light"] .dashboard {
-    background:
-    radial-gradient(circle at 100% 0, rgba(99, 102, 241, 0.08), transparent 30%),
+html[data-theme="light"] .dashboard {
+  background:
+    radial-gradient(circle at 100% 0, rgba(99, 102, 241, 0.06), transparent 30%),
     linear-gradient(145deg, #ffffff, #f8fafc) !important;
-  }
+}
 
 html[data-theme="light"] header h1 {
   background: linear-gradient(100deg, #0f172a, #4f46e5, #7c3aed);
@@ -3383,30 +3381,36 @@ html[data-theme="light"] .app > section {
 }
 
 html[data-theme="light"] .user-bar {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(15, 23, 42, 0.09);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(148, 163, 184, 0.18);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+}
+
+html[data-theme="light"] .user-actions {
+  background: rgba(219, 228, 240, 0.9);
+  border-color: rgba(148, 163, 184, 0.12);
 }
 
 html[data-theme="light"] .profile-btn,
 html[data-theme="light"] .home-btn,
 html[data-theme="light"] .reports-btn {
-  color: #4338ca;
-  background: rgba(79, 70, 229, 0.07);
-  border-color: rgba(79, 70, 229, 0.18);
+  color: #334155;
+  background: rgba(255, 255, 255, 0.4);
+  border-color: transparent;
 }
 
 html[data-theme="light"] .profile-btn:hover,
 html[data-theme="light"] .home-btn:hover,
 html[data-theme="light"] .reports-btn:hover {
-  color: #312e81;
-  background: rgba(79, 70, 229, 0.13);
+  color: #1f2a44;
+  background: rgba(255, 255, 255, 0.75);
 }
 
 html[data-theme="light"] .user-actions .is-active {
-  color: #3730a3;
-  background: #e0e7ff;
-  border-color: #818cf8;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  color: #273a8b;
+  background: #e5ebff;
+  border-color: rgba(99, 102, 241, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 8px 18px rgba(99, 102, 241, 0.10);
 }
 
 html[data-theme="light"] .theme-toggle-btn {
