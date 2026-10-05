@@ -1,0 +1,548 @@
+/* =========================================================
+   RESPONSIVE STYLES — SEPARATE FILE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+  .app {
+    width: calc(100% - 30px);
+  }
+
+  form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  form button {
+    grid-column: span 2;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .password-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .password-field:last-of-type {
+    grid-column: 1 / -1;
+  }
+
+  .password-requirement-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 850px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filter-field:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 800px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-side-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 14px;
+  }
+
+  .profile-side-icon {
+    grid-row: span 2;
+    margin-bottom: 0;
+  }
+
+  .profile-side-card > p,
+  .profile-security-row {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .reports-page {
+    padding: 20px 0 40px;
+  }
+
+  .reports-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .reports-month-picker {
+    width: 100%;
+  }
+
+  .reports-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .profile-page {
+    padding: 5px 0 35px;
+  }
+
+  .profile-hero {
+    min-height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px 24px;
+  }
+
+  .profile-avatar-large {
+    width: 90px;
+    height: 90px;
+    flex-basis: 90px;
+    font-size: 30px;
+  }
+
+  .profile-identity {
+    width: 100%;
+  }
+
+  .profile-name-row h1 {
+    font-size: 29px;
+  }
+
+  .profile-main-card,
+  .profile-side-card,
+  .profile-password-card {
+    padding: 20px;
+  }
+
+  .profile-account-card {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .profile-logout-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .app {
+    width: calc(100% - 18px);
+    padding: 20px 0 40px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  header p {
+    font-size: 0.8rem;
+  }
+
+  .app > section {
+    padding: 18px !important;
+    border-radius: 15px;
+  }
+
+  .user-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .user-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .profile-btn,
+  .home-btn,
+  .reports-btn,
+  .theme-toggle-btn,
+  .logout-btn {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard {
+    padding: 18px !important;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 13px;
+  }
+
+  .dashboard-period {
+    width: 100%;
+  }
+
+  .analytics-card {
+    padding: 14px;
+  }
+
+  .planning-header {
+    flex-direction: column;
+  }
+
+  .planning-month,
+  .planning-month input {
+    width: 100%;
+  }
+
+  .planning-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .planning-form,
+  .recurring-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .planning-form button {
+    grid-column: 1 / -1;
+  }
+
+  .balance h3 {
+    font-size: 1.9rem;
+  }
+
+  form {
+    grid-template-columns: 1fr;
+  }
+
+  form button {
+    grid-column: auto;
+  }
+
+  .filters-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-field:first-child {
+    grid-column: auto;
+  }
+
+  .clear-filter {
+    width: 100%;
+  }
+
+  .transaction {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .transaction-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .transaction-actions p {
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .chart {
+    height: 180px;
+    padding-left: 32px;
+  }
+
+  .bars {
+    gap: 32px;
+  }
+
+  .chart-bar {
+    width: 38px;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .edit-modal {
+    padding: 20px;
+    border-radius: 17px;
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+  }
+
+  .auth-page {
+    padding: 20px 14px;
+  }
+
+  .auth-card {
+    padding: 25px 20px;
+    border-radius: 20px;
+  }
+
+  .profile-page {
+    margin: 15px auto;
+  }
+
+  .profile-card {
+    padding: 22px 17px;
+  }
+
+  .profile-header {
+    padding-top: 4px;
+  }
+
+  .profile-info {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-info-item:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .profile-info-item:last-child {
+    border-bottom: 0;
+  }
+
+  .profile-security {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .profile-topbar {
+    align-items: flex-start;
+  }
+
+  .profile-page-label {
+    font-size: 9px;
+  }
+
+  .profile-details {
+    grid-template-columns: 1fr;
+  }
+
+  .password-form {
+    grid-template-columns: 1fr;
+  }
+
+  .password-field:last-of-type {
+    grid-column: auto;
+  }
+
+  .password-requirements,
+  .change-password-btn {
+    grid-column: auto;
+  }
+
+  .password-requirement-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .profile-password-header {
+    gap: 12px;
+  }
+
+  .notification-center {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .notification-trigger {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+@media (max-width: 520px) {
+  .reports-header h1 {
+    font-size: 24px;
+  }
+
+  .reports-card {
+    padding: 17px;
+  }
+
+  .reports-card-header {
+    flex-direction: column;
+  }
+
+  .reports-month-label,
+  .reports-count {
+    align-self: flex-start;
+  }
+
+  .report-stat {
+    padding: 17px;
+  }
+
+  .report-stat strong {
+    font-size: 19px;
+  }
+
+  .report-overview strong {
+    font-size: 16px;
+  }
+
+  .reports-table-wrapper {
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .reports-table {
+    min-width: 520px;
+  }
+
+  .reports-table th,
+  .reports-table td {
+    padding: 10px 5px;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  .reports-table th {
+    letter-spacing: 0;
+  }
+
+  .reports-table td strong {
+    display: block;
+  }
+
+  .report-type {
+    max-width: 100%;
+    overflow: hidden;
+    padding: 4px 5px;
+    font-size: 9px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .reports-table td:nth-child(5) {
+    font-size: 9px;
+  }
+
+  .auth-page {
+    padding: 20px 14px;
+    align-items: flex-start;
+  }
+
+  .auth-card {
+    margin-top: 20px;
+    padding: 26px 20px;
+    border-radius: 20px;
+  }
+
+  .auth-brand {
+    margin-bottom: 23px;
+  }
+
+  .auth-logo {
+    width: 52px;
+    height: 52px;
+    font-size: 23px;
+  }
+
+  .auth-brand h1 {
+    font-size: 22px;
+  }
+
+  .auth-heading h2 {
+    font-size: 21px;
+  }
+
+  .auth-tabs {
+    margin-bottom: 24px;
+  }
+
+  .auth-tabs button {
+    font-size: 12px;
+  }
+
+  .input-wrapper input {
+    height: 46px;
+  }
+
+  .auth-submit {
+    height: 47px;
+  }
+}
+
+@media (max-width: 380px) {
+  .app {
+    width: calc(100% - 12px);
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+  }
+
+  .profile-hero {
+    padding: 22px 17px;
+  }
+
+  .profile-main-card,
+  .profile-side-card,
+  .profile-account-card {
+    padding: 16px;
+  }
+
+  .profile-name-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .profile-password-icon {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+    font-size: 16px;
+  }
+
+  .password-requirement-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-card {
+    padding: 22px 16px;
+  }
+
+  .auth-brand h1 {
+    font-size: 20px;
+  }
+
+  .auth-heading h2 {
+    font-size: 19px;
+  }
+}

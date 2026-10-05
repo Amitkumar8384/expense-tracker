@@ -681,6 +681,97 @@
 }
 
 /* =========================================================
+   DARK REPORT THEME
+   ========================================================= */
+
+html[data-theme="dark"] .reports-page {
+  color: #e2e8f0;
+}
+
+html[data-theme="dark"] .reports-header h1,
+html[data-theme="dark"] .reports-card-header h2,
+html[data-theme="dark"] .reports-card h2,
+html[data-theme="dark"] .report-stat strong,
+html[data-theme="dark"] .category-info strong,
+html[data-theme="dark"] .report-overview strong,
+html[data-theme="dark"] .reports-table td strong,
+html[data-theme="dark"] .reports-empty h3 {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .reports-header p,
+html[data-theme="dark"] .reports-month-picker label,
+html[data-theme="dark"] .report-stat span:not(.report-stat-icon),
+html[data-theme="dark"] .category-info span,
+html[data-theme="dark"] .report-overview span,
+html[data-theme="dark"] .reports-table td,
+html[data-theme="dark"] .reports-table th,
+html[data-theme="dark"] .reports-empty p {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .reports-month-picker input {
+  color: #e2e8f0;
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+html[data-theme="dark"] .report-stat,
+html[data-theme="dark"] .reports-card {
+  background: rgba(15, 23, 42, 0.78);
+  border-color: rgba(148, 163, 184, 0.14);
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.22);
+}
+
+html[data-theme="dark"] .report-stat:hover,
+html[data-theme="dark"] .reports-card:hover {
+  background: rgba(15, 23, 42, 0.88);
+  border-color: rgba(99, 102, 241, 0.28);
+}
+
+html[data-theme="dark"] .category-progress {
+  background: rgba(148, 163, 184, 0.18);
+}
+
+html[data-theme="dark"] .report-overview {
+  border-color: rgba(148, 163, 184, 0.08);
+}
+
+html[data-theme="dark"] .report-overview > div {
+  background: rgba(15, 23, 42, 0.2);
+  border-color: rgba(148, 163, 184, 0.08);
+}
+
+html[data-theme="dark"] .reports-table th {
+  background: rgba(15, 23, 42, 0.35);
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .reports-table td {
+  border-color: rgba(148, 163, 184, 0.08);
+}
+
+html[data-theme="dark"] .reports-table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.07);
+}
+
+html[data-theme="dark"] .reports-btn,
+html[data-theme="dark"] .reports-back-btn,
+html[data-theme="dark"] .export-btn {
+  color: #dbeafe;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.22);
+}
+
+html[data-theme="dark"] .reports-btn:hover,
+html[data-theme="dark"] .reports-back-btn:hover,
+html[data-theme="dark"] .export-btn:hover {
+  color: #f8fafc;
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+/* =========================================================
    LIGHT REPORT THEME
    ========================================================= */
 
