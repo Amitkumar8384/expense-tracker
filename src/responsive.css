@@ -1251,3 +1251,140 @@ html[data-theme="light"] .auth-footer {
     margin-top: 17px;
   }
 }
+
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  padding: 14px 0 4px;
+  color: var(--muted-2);
+  border-top: 1px solid var(--border);
+  font-size: 0.68rem;
+}
+
+@media (max-width: 600px) {
+  .app-footer {
+    margin-top: 12px;
+    padding-top: 11px;
+  }
+}
+
+@media (min-width: 801px) {
+  .user-actions {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 4px;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+  }
+
+  .user-actions > button {
+    flex: 0 0 auto;
+    min-width: 0;
+    min-height: 48px;
+    gap: 9px;
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    box-shadow: none;
+  }
+
+  .user-actions .home-btn,
+  .user-actions .profile-btn {
+    color: #334155;
+    background: rgba(255, 255, 255, 0.56);
+  }
+
+  .user-actions .home-btn:hover,
+  .user-actions .profile-btn:hover {
+    color: #1e293b;
+    background: #f8fafc;
+    border-color: rgba(148, 163, 184, 0.16);
+  }
+
+  .user-actions .home-btn.is-active,
+  .user-actions .profile-btn.is-active {
+    color: #334155;
+    background: #f1f4f8;
+    border-color: rgba(148, 163, 184, 0.1);
+  }
+
+  .user-actions .reports-btn {
+    flex: 0 0 auto;
+    min-width: 0;
+    min-height: 48px;
+    gap: 9px;
+    padding: 0 16px;
+    border-radius: 12px;
+    font-size: 0.86rem;
+    font-weight: 750;
+    color: #4f46e5;
+    background: rgba(79, 70, 229, 0.07);
+    border-color: rgba(99, 102, 241, 0.22);
+  }
+
+  .user-actions .reports-btn:hover,
+  .user-actions .reports-btn.is-active {
+    color: #4338ca;
+    background: #e8ebfb;
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+
+  .user-actions .logout-btn {
+    color: #be123c;
+    background: rgba(225, 29, 72, 0.055);
+    border-color: rgba(225, 29, 72, 0.2);
+  }
+
+  .user-actions .logout-btn:hover {
+    color: #9f1239;
+    background: #fceef1;
+    border-color: rgba(225, 29, 72, 0.3);
+  }
+
+  html[data-theme="dark"] .user-actions {
+    background: rgba(15, 23, 42, 0.62);
+    border: 1px solid rgba(148, 163, 184, 0.13);
+  }
+
+  html[data-theme="dark"] .user-actions .home-btn,
+  html[data-theme="dark"] .user-actions .profile-btn {
+    color: #dfe7ff;
+    background: rgba(148, 163, 184, 0.075);
+  }
+
+  html[data-theme="dark"] .user-actions .home-btn.is-active,
+  html[data-theme="dark"] .user-actions .profile-btn.is-active {
+    color: #eff6ff;
+    background: rgba(99, 102, 241, 0.22);
+    border-color: rgba(129, 140, 248, 0.3);
+  }
+
+  html[data-theme="dark"] .user-actions .reports-btn {
+    color: #a5b4fc;
+    background: rgba(99, 102, 241, 0.16);
+    border-color: rgba(129, 140, 248, 0.34);
+  }
+
+  html[data-theme="dark"] .user-actions .reports-btn:hover,
+  html[data-theme="dark"] .user-actions .reports-btn.is-active {
+    color: #c7d2fe;
+    background: rgba(99, 102, 241, 0.25);
+  }
+
+  html[data-theme="dark"] .user-actions .logout-btn {
+    color: #fda4af;
+    background: rgba(225, 29, 72, 0.12);
+    border-color: rgba(225, 29, 72, 0.24);
+  }
+
+  html[data-theme="dark"] .user-actions .logout-btn:hover {
+    color: #fecdd3;
+    background: rgba(225, 29, 72, 0.2);
+  }
+}

@@ -1187,6 +1187,10 @@ const updateExpense = useCallback(
       )}
 </Suspense>
 
+      <footer className="app-footer">
+        <span>© {new Date().getFullYear()} Expense Tracker</span>
+      </footer>
+
     </div>
 
   )
